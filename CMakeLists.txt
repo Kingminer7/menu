@@ -4,9 +4,8 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_OSX_ARCHITECTURES "arm64;x86_64")
 set(CMAKE_CXX_VISIBILITY_PRESET hidden)
 
-project(Template VERSION 1.0.0)
+project(Menu VERSION 1.0.0)
 
-# Set up the mod binary
 add_library(${PROJECT_NAME} SHARED
     src/main.cpp
     # Add any extra C++ source files here
@@ -20,5 +19,8 @@ endif()
 
 add_subdirectory($ENV{GEODE_SDK} ${CMAKE_CURRENT_BINARY_DIR}/geode)
 
-# Set up dependencies, resources, and link Geode.
+CPMAddPackage("gh:matcool/gd-imgui-cocos#8973953") # specify a commit!
+
+target_link_libraries(${PROJECT_NAME} imgui-cocos)
+
 setup_geode_mod(${PROJECT_NAME})
