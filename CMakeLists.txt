@@ -7,9 +7,9 @@ set(CMAKE_CXX_VISIBILITY_PRESET hidden)
 project(Summit VERSION 1.0.0)
 
 file(GLOB SOURCES
-    src/mods/*.cpp
+    src/mods/*/*.cpp
     src/ui/*.cpp
-    src/util/*.cpp
+    src/utils/*.cpp
 )
 
 add_library(${PROJECT_NAME} SHARED ${SOURCES})
@@ -21,9 +21,5 @@ else()
 endif()
 
 add_subdirectory($ENV{GEODE_SDK} ${CMAKE_CURRENT_BINARY_DIR}/geode)
-
-CPMAddPackage("gh:matcool/gd-imgui-cocos#8973953") # specify a commit!
-
-target_link_libraries(${PROJECT_NAME} imgui-cocos)
 
 setup_geode_mod(${PROJECT_NAME})

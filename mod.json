@@ -10,5 +10,12 @@
 	"name": "Summit Menu",
 	"version": "v1.0.0",
 	"developer": "km7dev",
-	"description": "A menu to test my skills."
+	"description": "A menu to test my skills.",
+	"resources": {
+		"spritesheets": {
+			"SM_summitSheet01": [
+				"resources/sprites/*.png"
+			]
+		}
+	}
 }

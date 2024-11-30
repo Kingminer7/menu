@@ -1,0 +1,13 @@
+#include "Summit.hpp"
+
+namespace summit {
+
+Menu *Menu::instance = nullptr;
+
+Menu *Menu::get() {
+  if (instance)
+    return instance;
+  instance = new Menu();
+    return instance;
+}
+} // namespace summit
