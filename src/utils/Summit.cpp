@@ -38,9 +38,11 @@ bool Menu::removeTab(std::string id) {
 bool Menu::registerMod(std::string tab, SMod mod) {
   for (auto &t : tabs)
     if (t.id == tab) {
+      log::info("Found tab {}.", tab);
       t.mods.push_back(mod);
       return true;
     }
+    log::error("Could not find tab {}!", tab);
   return false;
 }
 
@@ -65,10 +67,4 @@ $on_mod(Loaded) {
   summit::Menu::get()->createTab("creator", "Creator");
   summit::Menu::get()->createTab("level", "Level");
   summit::Menu::get()->createTab("settings", "Settings");
-  
-  auto s = summit::SMod();
-  s.id = "test";
-  s.name = "Test";
-  s.description = "This is a test mod";
-  summit::Menu::get()->registerMod("global", s);
 }

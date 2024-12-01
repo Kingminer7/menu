@@ -12,10 +12,7 @@ class SMod {
     std::string id;
     std::string name;
     std::string description;
-    CCNode *createNode() {
-      throw std::runtime_error("createNode not implemented");
-
-    }
+    std::function<CCNode *()> createNodeCB;
 };
 
 struct Tab {

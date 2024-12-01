@@ -69,8 +69,10 @@ namespace summit::ui {
             }
 
             for (SMod mod : tab.mods) {
-                auto node = mod.createNode();
-                menu->addChild(node);
+                if (mod.createNodeCB != nullptr) {
+                    if (auto node = mod.createNodeCB()) menu->m_contentLayer->addChild(node);
+                } else {
+                }
             }
         }
 
@@ -104,9 +106,9 @@ namespace summit::ui {
     }
 
     void CocosMenu::show() {
-        CCScene::get()->addChild(this, 9999999);
         auto s = m_mainLayer->getScale();
         m_mainLayer->setScale(0.0f);
+        CCScene::get()->addChild(this, 9999999);
         m_mainLayer->runAction(CCEaseElasticOut::create(CCScaleTo::create(0.5f, s), 1.2f));
     }
 
