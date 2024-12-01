@@ -37,44 +37,49 @@ namespace summit::ui {
         bg->ignoreAnchorPointForPosition(true);
         m_mainLayer->addChild(bg);
 
-        for (auto &tab : summit::Menu::get()->getTabs()) {
-            auto sprite = CCScale9Sprite::create("square02b_001.png");
-            sprite->setContentSize({85.f, 20.f});
-            sprite->setOpacity(100);
-            sprite->setID("bg");
-            CCLabelBMFont *label = CCLabelBMFont::create(tab.name.c_str(), "bigFont.fnt");
-            label->limitLabelWidth(80, .575f, 0.01f);
-            label->setPosition({42.5f, 10.f});
-            label->setID("label");
-            auto btn = CCMenuItemSpriteExtra::create(
-                sprite,
-                this, menu_selector(CocosMenu::onTab)
-            );
-            btn->addChild(label);
-            btn->setID(tab.id);
+        bool isSafeModeEnabled = summit::Menu::get()->getModValue<bool>("mods.safemode.enabled").unwrapOrDefault();
+        log::info("{} -> {}", isSafeModeEnabled, !isSafeModeEnabled);
+        summit::Menu::get()->setModValue<bool>("mods.safemode.enabled", !isSafeModeEnabled);
 
-            tabBtnMenu->addChild(btn);
-            tabBtnMenu->updateLayout();
-            m_menuBtns.push_back(btn);
 
-            auto menu = ScrollLayer::create({300.f, 280.f});
-            menu->setID(tab.id);
-            tabHolder->addChild(menu);
+        // for (auto &tab : summit::Menu::get()->getTabs()) {
+        //     auto sprite = CCScale9Sprite::create("square02b_001.png");
+        //     sprite->setContentSize({85.f, 20.f});
+        //     sprite->setOpacity(100);
+        //     sprite->setID("bg");
+        //     CCLabelBMFont *label = CCLabelBMFont::create(tab.name.c_str(), "bigFont.fnt");
+        //     label->limitLabelWidth(80, .575f, 0.01f);
+        //     label->setPosition({42.5f, 10.f});
+        //     label->setID("label");
+        //     auto btn = CCMenuItemSpriteExtra::create(
+        //         sprite,
+        //         this, menu_selector(CocosMenu::onTab)
+        //     );
+        //     btn->addChild(label);
+        //     btn->setID(tab.id);
 
-            if (tab.id == m_currentMenu) {
-                sprite->setColor({50, 50, 50});
-            } else {
-                menu->setVisible(false);
-                sprite->setColor({0, 0, 0});
-            }
+        //     tabBtnMenu->addChild(btn);
+        //     tabBtnMenu->updateLayout();
+        //     m_menuBtns.push_back(btn);
 
-            for (SMod mod : tab.mods) {
-                if (mod.createNodeCB != nullptr) {
-                    if (auto node = mod.createNodeCB()) menu->m_contentLayer->addChild(node);
-                } else {
-                }
-            }
-        }
+        //     auto menu = ScrollLayer::create({300.f, 280.f});
+        //     menu->setID(tab.id);
+        //     tabHolder->addChild(menu);
+
+        //     if (tab.id == m_currentMenu) {
+        //         sprite->setColor({50, 50, 50});
+        //     } else {
+        //         menu->setVisible(false);
+        //         sprite->setColor({0, 0, 0});
+        //     }
+
+        //     for (SMod mod : tab.mods) {
+        //         if (mod.createNodeCB != nullptr) {
+        //             if (auto node = mod.createNodeCB()) menu->m_contentLayer->addChild(node);
+        //         } else {
+        //         }
+        //     }
+        // }
 
         return true;
     }

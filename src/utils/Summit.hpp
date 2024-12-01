@@ -2,24 +2,11 @@
 
 #include <Geode/Geode.hpp>
 #include <matjson.hpp>
+#include "../mods/Mod.hpp"
 
 using namespace geode::prelude;
 
 namespace summit {
-
-class SMod {
-  public:
-    std::string id;
-    std::string name;
-    std::string description;
-    std::function<CCNode *()> createNodeCB;
-};
-
-struct Tab {
-  std::string id;
-  std::string name;
-  std::vector<SMod> mods;
-};
 
 class Menu {
 protected:
@@ -29,7 +16,7 @@ protected:
   Menu() {
     modData = Mod::get()->getSavedValue<matjson::Value>("modData");
   }
-  std::vector<Tab> tabs;
+  std::vector<summit::mods::Mod> mods;
 public:
   template <typename T>
   Result<T> getModValue(std::string key) {
@@ -43,6 +30,14 @@ public:
   }
 
   template <typename T>
+  void setModValueIfMissing(std::string key, T value) {
+    if (!modData.contains(key)) {
+      modData.set(key, value);
+      Mod::get()->setSavedValue<matjson::Value>("modData", modData);
+    }
+  }
+
+  template <typename T>
   Result<T> getTempValue(std::string key) {
     return tempData.get<T>(key);
   }
@@ -52,12 +47,12 @@ public:
     tempData.set(key, value);
   }
 
-  bool createTab(std::string id, std::string name);
-  std::vector<Tab> getTabs();
-  bool removeTab(std::string id);
-
-  bool registerMod(std::string tab, SMod mod);
-  bool unregisterMod(std::string tab, std::string id);
+  template <typename T>
+  void setTempValueIfMissing(std::string key, T value) {
+    if (!tempData.contains(key)) {
+      tempData.set(key, value);
+    }
+  }
 
   static Menu* get();
 };
