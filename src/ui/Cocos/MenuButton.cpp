@@ -1,5 +1,5 @@
 #include "MenuButton.hpp"
-#include "../utils/Summit.hpp"
+#include "../../utils/Summit.hpp"
 #include "CocosMenu.hpp"
 
 using namespace summit::ui;
@@ -29,11 +29,14 @@ bool MenuButton::init() {
   CCScene::get()->addChild(this);
   SceneManager::get()->keepAcrossScenes(this);
 
-  setZOrder(9999999);
-  setPosition({
-    Menu::get()->getModValue<float>("ballPosX").unwrapOrDefault(),
-    Menu::get()->getModValue<float>("ballPosY").unwrapOrDefault()
-  });
+  setZOrder(9999998);
+  auto x = Menu::get()->getModValue<float>("ballPosX").unwrapOrDefault();
+  auto y = Menu::get()->getModValue<float>("ballPosY").unwrapOrDefault();
+  x = std::clamp(x, -getContentWidth() / 2, CCDirector::get()->getWinSize().width - getContentWidth() / 2);
+  y = std::clamp(y, -getContentHeight() / 2, CCDirector::get()->getWinSize().height - getContentHeight() / 2);
+  setPosition({x, y});
+  Menu::get()->setModValue("ballPosX", x);
+  Menu::get()->setModValue("ballPosY", y);
 
   setID("summit-button"_spr);
 
@@ -54,22 +57,27 @@ MenuButton *MenuButton::get() {
 }
 
 void MenuButton::registerWithTouchDispatcher() {
-  CCTouchDispatcher::get()->addTargetedDelegate(this, -1234, true);
+  CCTouchDispatcher::get()->addTargetedDelegate(this, -9999999, true);
 }
 
 bool MenuButton::ccTouchBegan(CCTouch *touch, CCEvent *evt) {
-  move = false;
+  diff = getPosition() - touch->getLocation();
   startPos = new CCPoint(touch->getLocation());
   if (getScaledContentSize().width / 2 <
       ccpDistance(m_sprite->getPosition(),
                   convertToNodeSpace(touch->getLocation()))) {
-    log::info("Not within distance");
     return false;
   }
+  move = false;
+  
+  stopAllActions();
+  runAction(CCEaseSineOut::create(CCScaleTo::create(0.3f, m_scale * m_multiplier)));
   return true;
 }
 
 void MenuButton::ccTouchEnded(CCTouch *touch, CCEvent *evt) {
+  stopAllActions();
+  runAction(CCEaseSineOut::create(CCScaleTo::create(0.3f, m_scale)));
   if (move)
     return;
   onPress();
@@ -80,7 +88,7 @@ void MenuButton::ccTouchMoved(CCTouch *touch, CCEvent *evt) {
     if (ccpDistance(*startPos, touch->getLocation()) > 3)
       move = true;
   if (move) {
-    auto pos = getPosition() + touch->getDelta();
+    auto pos = touch->getLocation() + diff;
     pos.x = std::clamp(pos.x, -getContentWidth() / 2, CCDirector::get()->getWinSize().width - getContentWidth() / 2);
     pos.y = std::clamp(pos.y, -getContentHeight() / 2, CCDirector::get()->getWinSize().height - getContentHeight() / 2);
     setPosition(pos);
@@ -95,16 +103,30 @@ void MenuButton::onPress() {
 
 } // namespace summit::ui
 
-// Hooks
-
 #include <Geode/modify/MenuLayer.hpp>
-class $modify(MenuLayer){bool init(){if (!MenuLayer::init()) return false;
-// haha init
-if (!initialized) {
-  MenuButton::get();
-  initialized = true;
-}
-return true;
-}
-}
-;
+class $modify(MenuLayer){
+  bool init(){
+    if (!MenuLayer::init()) return false;
+    if (!initialized) {
+      MenuButton::get();
+      initialized = true;
+    }
+    return true;
+  }
+};
+
+#include <Geode/modify/CCScene.hpp>
+
+class $modify(CCScene) {
+  int getHighestChildZ() {
+    int btnZ;
+    auto btn = MenuButton::get();
+    if (btn) {
+      btnZ = btn->getZOrder();
+      btn->setZOrder(-1);
+    }
+    auto highest = CCScene::getHighestChildZ();
+    if (btn) btn->setZOrder(btnZ);
+    return highest;
+  }
+};

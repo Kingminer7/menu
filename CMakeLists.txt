@@ -8,7 +8,8 @@ project(Summit VERSION 1.0.0)
 
 file(GLOB SOURCES
     src/mods/*/*.cpp
-    src/ui/*.cpp
+    src/mods/*.cpp
+    src/ui/*/*.cpp
     src/utils/*.cpp
 )
 

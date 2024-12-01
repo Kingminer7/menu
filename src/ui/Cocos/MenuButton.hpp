@@ -10,8 +10,12 @@ namespace summit::ui {
     protected:
         static MenuButton *instance;
         
+        float m_scale = 1.0f;
+        float m_multiplier = 0.8f;
         bool move = false;
+
         CCPoint *startPos;
+        CCPoint diff;
         
         CCSprite *m_sprite;
 
