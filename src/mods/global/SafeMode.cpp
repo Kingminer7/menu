@@ -1,30 +1,24 @@
-#include "Mod.hpp"
-#include "../utils/Summit.hpp"
+#include "../Mod.hpp"
+#include "../../utils/Summit.hpp"
 
 namespace summit::mods {
     class SafeMode : public Mod {
     public:
         void init() override {
             optionType = OptionType::TOGGLE;
+            tab = "global";
+            id = "safemode";
+            name = "Safe Mode";
+            description = "Prevents you from completing a level.";
             summit::Menu::get()->setModValueIfMissing<bool>("mods.safemode.enabled", true);
         }
 
         void update() override {
             
         }
-        
-        std::string getName() override {
-            return "Safe Mode";
-        };
-        std::string getID() override {
-            return "safemode";
-        };
-        std::string getDescription() override {
-            return "Prevents you from beating levels.";
-        };
     };
 
-    REGISTER_MOD(new SafeMode(), "general");
+    REGISTER_MOD(new SafeMode(), "global");
 }
 
 #include <Geode/modify/PlayLayer.hpp>
@@ -36,5 +30,18 @@ class $modify(PlayLayer) {
             PlayLayer::levelComplete();
             m_isTestMode = orig;
         } else PlayLayer::levelComplete();
+    }
+
+    void destroyPlayer(PlayerObject *p, GameObject *g) {
+        if (summit::Menu::get()->getModValue<bool>("mods.safemode.enabled").unwrapOr(false)) {
+            auto orig = m_isTestMode;
+            m_isTestMode = true;
+            PlayLayer::destroyPlayer(p,g);
+            m_isTestMode = orig;
+        } else PlayLayer::destroyPlayer(p,g);
+    }
+
+    void resetLevel() {
+
     }
 };

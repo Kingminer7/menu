@@ -5,10 +5,20 @@ namespace summit::cocosui {
         return m_id;
     }
 
-    OptionNode *OptionNode::create(const std::string &id) {
+    std::string OptionNode::getName() {
+        return m_name;
+    }
+
+    std::string OptionNode::getDescription() {
+        return m_description;
+    }
+
+    OptionNode *OptionNode::create(std::string id, std::string name, std::string description) {
         auto ret = new OptionNode();
         if (ret && ret->init()) {
             ret->m_id = id;
+            ret->m_name = name;
+            ret->m_description = description;
             ret->autorelease();
             return ret;
         }

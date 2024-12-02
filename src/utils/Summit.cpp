@@ -15,7 +15,4 @@ Menu *Menu::get() {
 
 $on_mod(Loaded) {
   summit::mods::createTab("global", "Global");
-  summit::mods::createTab("level", "Level");
-  summit::mods::createTab("player", "Player");
-  summit::mods::createTab("bypass", "Bypass");
 }

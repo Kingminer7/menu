@@ -10,6 +10,7 @@ namespace summit::mods {
     };
 
     void createTab(std::string id, std::string name) {
+        geode::log::info("New tab: {} (name {})", id, name);
         tabs[id] = name;
     };
 
@@ -24,19 +25,16 @@ namespace summit::mods {
     std::vector<std::shared_ptr<Mod>> getModsInTab(std::string tab) {
         std::vector<std::shared_ptr<Mod>> tabMods;
         for (auto mod : mods) {
-            if (tabs[mod->getID()] == tab) {
+            if (mod->getTab() == tab) {
                 tabMods.push_back(mod);
             }
         }
         return tabMods;
     };
 
-    void registerMod(Mod* mod, std::string tab);
-    void createTab(std::string name, std::string id);
-
     std::shared_ptr<Mod> getMod(std::string id) {
         for (auto mod : mods) {
-            if (mod->getID() == id) {
+            if (mod->getId() == id) {
                 return mod;
             }
         }

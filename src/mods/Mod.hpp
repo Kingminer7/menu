@@ -10,14 +10,22 @@ namespace summit::mods {
     };
 
     class Mod {
+        protected:
+            std::string id;
+            std::string name;
+            std::string description;
+            std::string tab;
+            OptionType optionType;
         public:
             virtual void init() = 0;
             virtual void update() = 0;
+
             virtual bool isCheat() {return false;};
-            virtual std::string getName() = 0;
-            virtual std::string getID() = 0;
-            virtual std::string getDescription() = 0;
-            OptionType optionType;
+            std::string getId() {return id;};
+            std::string getName() {return name;};
+            std::string getDescription() {return description;};
+            std::string getTab() {return tab;};
+            OptionType getOptionType() {return optionType;};
     };
 
     void registerMod(Mod* mod, std::string tab);

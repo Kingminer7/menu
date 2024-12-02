@@ -8,7 +8,6 @@ namespace summit::cocosui {
 
     bool CocosMenu::setup() {
         m_currentMenu = Menu::get()->getTempValue<std::string>("currentMenu").unwrapOr("global");
-        log::info("{}", m_currentMenu);
         if (auto bg = m_mainLayer->getChildByType<CCScale9Sprite>(0)) {
             bg->setID("bg"_spr);
             bg->setZOrder(-10);
@@ -45,10 +44,6 @@ namespace summit::cocosui {
         bg->setZOrder(-1);
         m_mainLayer->addChild(bg);
 
-        bool isSafeModeEnabled = summit::Menu::get()->getModValue<bool>("mods.safemode.enabled").unwrapOrDefault();
-        log::info("{} -> {}", isSafeModeEnabled, !isSafeModeEnabled);
-        summit::Menu::get()->setModValue<bool>("mods.safemode.enabled", !isSafeModeEnabled);
-        
         for (auto tab : mods::getTabs()) {
             auto sprite = CCScale9Sprite::create("square02b_small.png");
             sprite->setScale(0.5f);
@@ -83,8 +78,7 @@ namespace summit::cocosui {
 
             m_menus.push_back(menu);
 
-            auto toggler = ToggleNode::create("mods.safemode.enabled");
-            toggler->m_label->setString(tab.first.c_str());
+            auto toggler = ToggleNode::create("mods.safemode.enabled", "Safe Mode");
             toggler->setPosition({0, 250});
             menu->m_contentLayer->addChild(toggler);
 

@@ -12,6 +12,6 @@ namespace summit::cocosui {
             void onToggle(CCObject *sender);
             CCLabelBMFont *m_label;
             CCMenuItemToggler *m_toggler;
-            static ToggleNode *create(const std::string &id);
+            static ToggleNode *create(std::string id, std::string name, std::string description = "");
     };
 }
