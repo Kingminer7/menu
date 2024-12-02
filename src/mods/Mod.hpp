@@ -1,6 +1,14 @@
 #pragma once
 
 namespace summit::mods {
+    enum class OptionType {
+        TOGGLE,
+        INTEGER,
+        FLOAT,
+        STRING,
+        BUTTON
+    };
+
     class Mod {
         public:
             virtual void init() = 0;
@@ -9,18 +17,15 @@ namespace summit::mods {
             virtual std::string getName() = 0;
             virtual std::string getID() = 0;
             virtual std::string getDescription() = 0;
+            OptionType optionType;
     };
 
     void registerMod(Mod* mod, std::string tab);
-    void createTab(std::string name, std::string id);
+    void createTab(std::string id, std::string name);
 
-    enum class OptionType {
-        TOGGLE,
-        INTEGER,
-        FLOAT,
-        STRING,
-        BUTTON
-    };
+    std::vector<std::shared_ptr<Mod>> getMods();
+    std::map<std::string, std::string> getTabs();
+    std::vector<std::shared_ptr<Mod>> getModsInTab(std::string tab);
 }
 
 #define REGISTER_MOD(mod, tab) $execute{ summit::mods::registerMod(mod, tab); }

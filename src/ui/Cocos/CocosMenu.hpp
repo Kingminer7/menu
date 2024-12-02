@@ -2,7 +2,7 @@
 
 using namespace geode::prelude;
 
-namespace summit::ui {
+namespace summit::cocosui {
 class CocosMenu : public Popup<> {
 protected:
   bool setup() override;

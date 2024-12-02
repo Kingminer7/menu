@@ -5,6 +5,7 @@ namespace summit::mods {
     class SafeMode : public Mod {
     public:
         void init() override {
+            optionType = OptionType::TOGGLE;
             summit::Menu::get()->setModValueIfMissing<bool>("mods.safemode.enabled", true);
         }
 

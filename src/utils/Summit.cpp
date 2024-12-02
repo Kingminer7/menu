@@ -14,5 +14,8 @@ Menu *Menu::get() {
 } // namespace summit
 
 $on_mod(Loaded) {
-  summit::Menu::get();
+  summit::mods::createTab("global", "Global");
+  summit::mods::createTab("level", "Level");
+  summit::mods::createTab("player", "Player");
+  summit::mods::createTab("bypass", "Bypass");
 }

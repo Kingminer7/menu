@@ -4,11 +4,11 @@
 
 using namespace geode::prelude;
 
-namespace summit::ui {
+namespace summit::cocosui {
 
-    class MenuButton : public CCMenu {
+    class MenuBall : public CCMenu {
     protected:
-        static MenuButton *instance;
+        static MenuBall *instance;
         
         float m_scale = 1.0f;
         float m_multiplier = 0.8f;
@@ -29,7 +29,7 @@ namespace summit::ui {
         void registerWithTouchDispatcher() override;
 
     public:
-        static MenuButton *get();
+        static MenuBall *get();
         void onPress();
     };
 

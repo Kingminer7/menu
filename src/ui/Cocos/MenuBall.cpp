@@ -1,17 +1,17 @@
-#include "MenuButton.hpp"
+#include "MenuBall.hpp"
 #include "../../utils/Summit.hpp"
 #include "CocosMenu.hpp"
 
-using namespace summit::ui;
+using namespace summit::cocosui;
 using namespace geode::prelude;
 
 bool initialized = false;
 
-namespace summit::ui {
+namespace summit::cocosui {
 
-MenuButton *MenuButton::instance = nullptr;
+MenuBall *MenuBall::instance = nullptr;
 
-bool MenuButton::init() {
+bool MenuBall::init() {
   if (!CCMenu::init()) {
     return false;
   }
@@ -43,10 +43,10 @@ bool MenuButton::init() {
   return true;
 }
 
-MenuButton *MenuButton::get() {
+MenuBall *MenuBall::get() {
   if (instance)
     return instance;
-  auto ret = new MenuButton();
+  auto ret = new MenuBall();
   if (ret && ret->init()) {
     ret->autorelease();
     return ret;
@@ -56,11 +56,12 @@ MenuButton *MenuButton::get() {
   }
 }
 
-void MenuButton::registerWithTouchDispatcher() {
+void MenuBall::registerWithTouchDispatcher() {
   CCTouchDispatcher::get()->addTargetedDelegate(this, -9999999, true);
 }
 
-bool MenuButton::ccTouchBegan(CCTouch *touch, CCEvent *evt) {
+bool MenuBall::ccTouchBegan(CCTouch *touch, CCEvent *evt) {
+  if (CocosMenu::get()) return false;
   diff = getPosition() - touch->getLocation();
   startPos = new CCPoint(touch->getLocation());
   if (getScaledContentSize().width / 2 <
@@ -75,7 +76,7 @@ bool MenuButton::ccTouchBegan(CCTouch *touch, CCEvent *evt) {
   return true;
 }
 
-void MenuButton::ccTouchEnded(CCTouch *touch, CCEvent *evt) {
+void MenuBall::ccTouchEnded(CCTouch *touch, CCEvent *evt) {
   stopAllActions();
   runAction(CCEaseSineOut::create(CCScaleTo::create(0.3f, m_scale)));
   if (move)
@@ -83,7 +84,7 @@ void MenuButton::ccTouchEnded(CCTouch *touch, CCEvent *evt) {
   onPress();
 }
 
-void MenuButton::ccTouchMoved(CCTouch *touch, CCEvent *evt) {
+void MenuBall::ccTouchMoved(CCTouch *touch, CCEvent *evt) {
   if (!move)
     if (ccpDistance(*startPos, touch->getLocation()) > 3)
       move = true;
@@ -97,18 +98,18 @@ void MenuButton::ccTouchMoved(CCTouch *touch, CCEvent *evt) {
   }
 }
 
-void MenuButton::onPress() { 
+void MenuBall::onPress() { 
   CocosMenu::open();
  }
 
-} // namespace summit::ui
+} // namespace summit::cocosui
 
 #include <Geode/modify/MenuLayer.hpp>
 class $modify(MenuLayer){
   bool init(){
     if (!MenuLayer::init()) return false;
     if (!initialized) {
-      MenuButton::get();
+      MenuBall::get();
       initialized = true;
     }
     return true;
@@ -120,7 +121,7 @@ class $modify(MenuLayer){
 class $modify(CCScene) {
   int getHighestChildZ() {
     int btnZ;
-    auto btn = MenuButton::get();
+    auto btn = MenuBall::get();
     if (btn) {
       btnZ = btn->getZOrder();
       btn->setZOrder(-1);

@@ -21,6 +21,19 @@ namespace summit::mods {
         return tabs;
     };
 
+    std::vector<std::shared_ptr<Mod>> getModsInTab(std::string tab) {
+        std::vector<std::shared_ptr<Mod>> tabMods;
+        for (auto mod : mods) {
+            if (tabs[mod->getID()] == tab) {
+                tabMods.push_back(mod);
+            }
+        }
+        return tabMods;
+    };
+
+    void registerMod(Mod* mod, std::string tab);
+    void createTab(std::string name, std::string id);
+
     std::shared_ptr<Mod> getMod(std::string id) {
         for (auto mod : mods) {
             if (mod->getID() == id) {
