@@ -58,9 +58,9 @@ class $modify (CCTextInputNode) {
         if (summit::Menu::get()->getModValue<bool>("mods.charfilterbypass.enabled").unwrapOr(false)) {
             if (m_allowedChars != "`1234567890-=qwertyuiop[]\\asdfghjkl;'cxzvbnm,./~!@#$%^&*()_+QWERTYUIOP{}|ASDFGHJKL:\"ZXCVBNM<>? ") {
                 m_fields->m_origChars = m_allowedChars;
-                setAllowedChars("`1234567890-=qwertyuiop[]\\asdfghjkl;'cxzvbnm,./~!@#$%^&*()_+QWERTYUIOP{}|ASDFGHJKL:\"ZXCVBNM<>?");
+                setAllowedChars("`1234567890-=qwertyuiop[]\\asdfghjkl;'cxzvbnm,./~!@#$%^&*()_+QWERTYUIOP{}|ASDFGHJKL:\"ZXCVBNM<>? ");
             }
-        } else if (m_allowedChars == "`1234567890-=qwertyuiop[]\\asdfghjkl;'cxzvbnm,./~!@#$%^&*()_+QWERTYUIOP{}|ASDFGHJKL:\"ZXCVBNM<>?") setAllowedChars(m_fields->m_origChars);
+        } else if (m_allowedChars == "`1234567890-=qwertyuiop[]\\asdfghjkl;'cxzvbnm,./~!@#$%^&*()_+QWERTYUIOP{}|ASDFGHJKL:\"ZXCVBNM<>? ") setAllowedChars(m_fields->m_origChars);
 
         CCTextInputNode::updateLabel(p0);
     }
