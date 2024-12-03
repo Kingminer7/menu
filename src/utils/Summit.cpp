@@ -14,5 +14,5 @@ Menu *Menu::get() {
 } // namespace summit
 
 $on_mod(Loaded) {
-  summit::Menu::get();
+  summit::mods::createTab("global", "Global");
 }

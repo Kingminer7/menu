@@ -1,11 +1,17 @@
 #include "CocosMenu.hpp"
+// #include "OptionNode.hpp"
+#include "../../mods/Mod.hpp"
 #include "../../utils/Summit.hpp"
+#include "ToggleNode.hpp"
 
-namespace summit::ui {
+namespace summit::cocosui {
 
     bool CocosMenu::setup() {
         m_currentMenu = Menu::get()->getTempValue<std::string>("currentMenu").unwrapOr("global");
-        m_mainLayer->getChildByType<CCScale9Sprite>(0)->setID("bg"_spr);
+        if (auto bg = m_mainLayer->getChildByType<CCScale9Sprite>(0)) {
+            bg->setID("bg"_spr);
+            bg->setZOrder(-10);
+        }
         m_mainLayer->setID("main-layer"_spr);
         m_buttonMenu->setID("button-menu"_spr);
         m_backBtn = m_buttonMenu->getChildByType<CCMenuItemSpriteExtra>(0);
@@ -35,51 +41,52 @@ namespace summit::ui {
         bg->setID("tab-bg"_spr);
         bg->setPosition({ 105, 10 });
         bg->ignoreAnchorPointForPosition(true);
+        bg->setZOrder(-1);
         m_mainLayer->addChild(bg);
 
-        bool isSafeModeEnabled = summit::Menu::get()->getModValue<bool>("mods.safemode.enabled").unwrapOrDefault();
-        log::info("{} -> {}", isSafeModeEnabled, !isSafeModeEnabled);
-        summit::Menu::get()->setModValue<bool>("mods.safemode.enabled", !isSafeModeEnabled);
+        for (auto tab : mods::getTabs()) {
+            auto sprite = CCScale9Sprite::create("square02b_small.png");
+            sprite->setScale(0.5f);
+            sprite->setScaledContentSize({85.f, 20.f});
+            sprite->setOpacity(100);
+            sprite->setID("bg");
+            CCLabelBMFont *label = CCLabelBMFont::create(tab.second.c_str(), "bigFont.fnt");
+            label->limitLabelWidth(80, .575f, 0.01f);
+            label->setPosition({42.5f, 10.f});
+            label->setID("label");
+            auto btn = CCMenuItemSpriteExtra::create(
+                sprite,
+                this, menu_selector(CocosMenu::onTab)
+            );
+            btn->addChild(label);
+            btn->setID(tab.first);
 
+            tabBtnMenu->addChild(btn);
+            tabBtnMenu->updateLayout();
+            m_menuBtns.push_back(btn);
 
-        // for (auto &tab : summit::Menu::get()->getTabs()) {
-        //     auto sprite = CCScale9Sprite::create("square02b_001.png");
-        //     sprite->setContentSize({85.f, 20.f});
-        //     sprite->setOpacity(100);
-        //     sprite->setID("bg");
-        //     CCLabelBMFont *label = CCLabelBMFont::create(tab.name.c_str(), "bigFont.fnt");
-        //     label->limitLabelWidth(80, .575f, 0.01f);
-        //     label->setPosition({42.5f, 10.f});
-        //     label->setID("label");
-        //     auto btn = CCMenuItemSpriteExtra::create(
-        //         sprite,
-        //         this, menu_selector(CocosMenu::onTab)
-        //     );
-        //     btn->addChild(label);
-        //     btn->setID(tab.id);
+            auto menu = ScrollLayer::create({300.f, 280.f});
+            menu->setID(tab.first);
+            tabHolder->addChild(menu);
 
-        //     tabBtnMenu->addChild(btn);
-        //     tabBtnMenu->updateLayout();
-        //     m_menuBtns.push_back(btn);
+            if (tab.first == m_currentMenu) {
+                sprite->setColor({50, 50, 50});
+            } else {
+                menu->setVisible(false);
+                sprite->setColor({0, 0, 0});
+            }
 
-        //     auto menu = ScrollLayer::create({300.f, 280.f});
-        //     menu->setID(tab.id);
-        //     tabHolder->addChild(menu);
+            m_menus.push_back(menu);
 
-        //     if (tab.id == m_currentMenu) {
-        //         sprite->setColor({50, 50, 50});
-        //     } else {
-        //         menu->setVisible(false);
-        //         sprite->setColor({0, 0, 0});
-        //     }
+            auto toggler = ToggleNode::create("mods.safemode.enabled", "Safe Mode");
+            toggler->setPosition({0, 250});
+            menu->m_contentLayer->addChild(toggler);
 
-        //     for (SMod mod : tab.mods) {
-        //         if (mod.createNodeCB != nullptr) {
-        //             if (auto node = mod.createNodeCB()) menu->m_contentLayer->addChild(node);
-        //         } else {
-        //         }
-        //     }
-        // }
+            for (auto mod : mods::getModsInTab(tab.first)) {
+                
+            }
+        }
+            
 
         return true;
     }
