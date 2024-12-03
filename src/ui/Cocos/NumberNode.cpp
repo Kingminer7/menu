@@ -46,7 +46,7 @@ NumberNode *NumberNode::create(std::string id, std::string name,
 }
 
 void NumberNode::onInput(std::string input) {
-  m_value = std::stof(input);
+  m_value = std::atof(input.c_str());
   summit::Menu::get()->setModValue(m_id, m_value);
 }
 } // namespace summit::cocosui
