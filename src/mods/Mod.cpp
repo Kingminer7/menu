@@ -4,7 +4,7 @@ namespace summit::mods {
     static std::vector<std::shared_ptr<Mod>> mods;
     static std::map<std::string, std::string> tabs;
 
-    void registerMod(Mod* mod, std::string tab) {
+    void registerMod(Mod* mod) {
         mods.push_back(std::shared_ptr<Mod>(mod));
         mod->init();
     };

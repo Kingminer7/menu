@@ -78,13 +78,18 @@ namespace summit::cocosui {
 
             m_menus.push_back(menu);
 
-            auto toggler = ToggleNode::create("mods.safemode.enabled", "Safe Mode");
-            toggler->setPosition({0, 250});
-            menu->m_contentLayer->addChild(toggler);
-
+            log::info("{}", tab.first);
             for (auto mod : mods::getModsInTab(tab.first)) {
-                
+                log::info("Adding mod: {}", mod->getId());
+                if (mod->getOptionType() == mods::OptionType::TOGGLE) {
+                    auto toggler = ToggleNode::create(mod->getValueName(), mod->getName());
+                    toggler->setPosition({0, 250});
+                    menu->m_contentLayer->addChild(toggler);
+                } else {
+                    log::info("\"{}\" uses an unsupported option type.", mod->getId());
+                }
             }
+            menu->m_contentLayer->updateLayout();
         }
             
 

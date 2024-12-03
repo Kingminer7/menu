@@ -14,5 +14,6 @@ Menu *Menu::get() {
 } // namespace summit
 
 $on_mod(Loaded) {
+  summit::mods::createTab("bypass", "Bypass");
   summit::mods::createTab("global", "Global");
 }

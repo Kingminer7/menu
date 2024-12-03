@@ -10,7 +10,8 @@ namespace summit::mods {
             id = "safemode";
             name = "Safe Mode";
             description = "Prevents you from completing a level.";
-            summit::Menu::get()->setModValueIfMissing<bool>("mods.safemode.enabled", true);
+            valueName = "mods.safemode.enabled";
+            summit::Menu::get()->setModValueIfMissing<bool>(valueName, true);
         }
 
         void update() override {
@@ -18,7 +19,7 @@ namespace summit::mods {
         }
     };
 
-    REGISTER_MOD(new SafeMode(), "global");
+    REGISTER_MOD(new SafeMode());
 }
 
 #include <Geode/modify/PlayLayer.hpp>

@@ -16,6 +16,7 @@ protected:
   Menu() {
     modData = Mod::get()->getSavedValue<matjson::Value>("modData");
   }
+  ~Menu() {}
   std::vector<summit::mods::Mod> mods;
 public:
   template <typename T>
