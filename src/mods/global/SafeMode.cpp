@@ -20,6 +20,53 @@ namespace summit::mods {
     };
 
     REGISTER_MOD(new SafeMode());
+    REGISTER_MOD(new SafeMode());
+    REGISTER_MOD(new SafeMode());
+    REGISTER_MOD(new SafeMode());
+    REGISTER_MOD(new SafeMode());
+    REGISTER_MOD(new SafeMode());
+    REGISTER_MOD(new SafeMode());
+    REGISTER_MOD(new SafeMode());
+    REGISTER_MOD(new SafeMode());
+    REGISTER_MOD(new SafeMode());
+    REGISTER_MOD(new SafeMode());
+    REGISTER_MOD(new SafeMode());
+    REGISTER_MOD(new SafeMode());
+    REGISTER_MOD(new SafeMode());
+    REGISTER_MOD(new SafeMode());
+    REGISTER_MOD(new SafeMode());
+    REGISTER_MOD(new SafeMode());
+    REGISTER_MOD(new SafeMode());
+    REGISTER_MOD(new SafeMode());
+    REGISTER_MOD(new SafeMode());
+    REGISTER_MOD(new SafeMode());
+    REGISTER_MOD(new SafeMode());
+    REGISTER_MOD(new SafeMode());
+    REGISTER_MOD(new SafeMode());
+    REGISTER_MOD(new SafeMode());
+    REGISTER_MOD(new SafeMode());
+    REGISTER_MOD(new SafeMode());
+    REGISTER_MOD(new SafeMode());
+    REGISTER_MOD(new SafeMode());
+    REGISTER_MOD(new SafeMode());
+    REGISTER_MOD(new SafeMode());
+    REGISTER_MOD(new SafeMode());
+    REGISTER_MOD(new SafeMode());
+    REGISTER_MOD(new SafeMode());
+    REGISTER_MOD(new SafeMode());
+    REGISTER_MOD(new SafeMode());
+    REGISTER_MOD(new SafeMode());
+    REGISTER_MOD(new SafeMode());
+    REGISTER_MOD(new SafeMode());
+    REGISTER_MOD(new SafeMode());
+    REGISTER_MOD(new SafeMode());
+    REGISTER_MOD(new SafeMode());
+    REGISTER_MOD(new SafeMode());
+    REGISTER_MOD(new SafeMode());
+    REGISTER_MOD(new SafeMode());
+    REGISTER_MOD(new SafeMode());
+    REGISTER_MOD(new SafeMode());
+    REGISTER_MOD(new SafeMode());
 }
 
 #include <Geode/modify/PlayLayer.hpp>
@@ -40,9 +87,5 @@ class $modify(PlayLayer) {
             PlayLayer::destroyPlayer(p,g);
             m_isTestMode = orig;
         } else PlayLayer::destroyPlayer(p,g);
-    }
-
-    void resetLevel() {
-
     }
 };

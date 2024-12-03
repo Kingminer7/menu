@@ -76,22 +76,32 @@ namespace summit::cocosui {
                 sprite->setColor({0, 0, 0});
             }
 
-            menu->m_contentLayer->setLayout(AxisLayout::create(Axis::Column));
-
             m_menus.push_back(menu);
 
             log::info("{}", tab.first);
+            int col = 0;
+            float y = 0;
             for (auto mod : mods::getModsInTab(tab.first)) {
+                col++;
+                if (col == 1) {
+                    col = -1;
+                    y += 30;
+                }
                 log::info("Adding mod: {}", mod->getId());
                 if (mod->getOptionType() == mods::OptionType::TOGGLE) {
                     auto toggler = ToggleNode::create(mod->getValueName(), mod->getName());
-                    toggler->setPosition({0, 250});
+                    toggler->setPosition({col == 0 ? 150.f : 0.f, y});
                     menu->m_contentLayer->addChild(toggler);
                 } else {
-                    log::info("\"{}\" uses an unsupported option type.", mod->getId());
+                    log::error("\"{}\" uses an unsupported option type.", mod->getId());
                 }
             }
-            menu->m_contentLayer->updateLayout();
+            if (y < menu->m_contentLayer->getContentSize().height) y = menu->m_contentLayer->getContentSize().height;
+            menu->m_contentLayer->setContentHeight(y);
+            for (CCNode *node : CCArrayExt<CCNode *>(menu->m_contentLayer->getChildren())) {
+                node->setPositionY(y - node->getPositionY());
+            }
+            menu->scrollToTop();
         }
             
 
