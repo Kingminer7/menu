@@ -3,6 +3,7 @@
 #include "../../mods/Mod.hpp"
 #include "../../utils/Summit.hpp"
 #include "ToggleNode.hpp"
+#include "NumberNode.hpp"
 
 namespace summit::cocosui {
 
@@ -92,7 +93,12 @@ namespace summit::cocosui {
                     auto toggler = ToggleNode::create(mod->getValueName(), mod->getName());
                     toggler->setPosition({col == 0 ? 150.f : 0.f, y});
                     menu->m_contentLayer->addChild(toggler);
-                } else {
+                } else if(mod->getOptionType() == mods::OptionType::FLOAT) {
+                    auto number = NumberNode::create(mod->getValueName(), mod->getName());
+                    number->setPosition({col == 0 ? 150.f : 0.f, y});
+                    menu->m_contentLayer->addChild(number);
+                } 
+                else {
                     log::error("\"{}\" uses an unsupported option type.", mod->getId());
                 }
             }
@@ -126,11 +132,13 @@ namespace summit::cocosui {
         return nullptr;
     }
 
-    void CocosMenu::open() {
+    void CocosMenu::open(bool closeIfOpen) {
         auto menu = CocosMenu::get();
         if (!menu) {
             menu = CocosMenu::create();
             menu->show();
+        } else if (closeIfOpen) {
+            menu->onClose(nullptr);
         }
     }
 

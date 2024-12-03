@@ -11,6 +11,7 @@ file(GLOB SOURCES
     src/mods/*.cpp
     src/ui/*/*.cpp
     src/utils/*.cpp
+    src/hooks/*.cpp
 )
 
 add_library(${PROJECT_NAME} SHARED ${SOURCES})

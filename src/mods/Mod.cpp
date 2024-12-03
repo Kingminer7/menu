@@ -2,7 +2,7 @@
 
 namespace summit::mods {
     static std::vector<std::shared_ptr<Mod>> mods;
-    static std::map<std::string, std::string> tabs;
+    static std::unordered_map<std::string, std::string> tabs;
 
     void registerMod(Mod* mod) {
         mods.push_back(std::shared_ptr<Mod>(mod));
@@ -17,7 +17,7 @@ namespace summit::mods {
         return mods;
     };
 
-    std::map<std::string, std::string> getTabs() {
+    std::unordered_map<std::string, std::string> getTabs() {
         return tabs;
     };
 

@@ -35,7 +35,7 @@ namespace summit::mods {
     void createTab(std::string id, std::string name);
 
     std::vector<std::shared_ptr<Mod>> getMods();
-    std::map<std::string, std::string> getTabs();
+    std::unordered_map<std::string, std::string> getTabs();
     std::vector<std::shared_ptr<Mod>> getModsInTab(std::string tab);
 }
 
