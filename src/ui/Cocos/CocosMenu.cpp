@@ -76,6 +76,8 @@ namespace summit::cocosui {
                 sprite->setColor({0, 0, 0});
             }
 
+            menu->m_contentLayer->setLayout(AxisLayout::create(Axis::Column));
+
             m_menus.push_back(menu);
 
             log::info("{}", tab.first);
