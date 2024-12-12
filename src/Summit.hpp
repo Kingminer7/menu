@@ -21,7 +21,6 @@ namespace summit {
         public:
             static void initialize() {
                 if (!initialized) {
-                    geode::log::info("{}", geode::Mod::get()->getSavedValue<std::string>("config"));
                     config = matjson::parse(geode::Mod::get()->getSavedValue<std::string>("config")).unwrapOrDefault();
                     // loop through and log all keys
                     temp = matjson::Value::object();

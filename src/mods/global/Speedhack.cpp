@@ -26,7 +26,8 @@ void SpeedhackMod::renderImGui() {
         onToggle(toggled);
     }
     ImGui::SameLine();
-    ImGui::DragFloat("Speed", &value, 0.1f, 0.1f, 1000.0f);
+    ImGui::SetNextItemWidth(70);
+    ImGui::DragFloat("", &value, 0.1f, 0.1f, 1000.0f);
     if (ImGui::IsItemHovered(ImGuiHoveredFlags_DelayShort))
     {
         ImGui::SetTooltip("Speeds up the game speed.");
@@ -48,14 +49,10 @@ std::string SpeedhackMod::getTab() const {
 
 void SpeedhackMod::onToggle(bool toggled) {
     summit::Config::setValue<bool>("global.speedhack.enabled", toggled, false);
-
-    geode::log::info("Speedhack toggled: {}", toggled);
 }
 
 void SpeedhackMod::onValueChange(float value) {
     summit::Config::setValue<float>("global.speedhack.value", value);
-
-    geode::log::info("Speedhack value changed: {}", value);
 }
 
 #include <Geode/modify/CCScheduler.hpp>
@@ -110,6 +107,4 @@ std::string SpeedAudioMod::getTab() const {
 
 void SpeedAudioMod::onToggleSpeed(bool toggled) {
     summit::Config::setValue<bool>("global.speedhack.audio.enabled", toggled);
-
-    geode::log::info("Speedhack audio toggled: {}", toggled);
 }

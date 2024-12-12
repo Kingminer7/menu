@@ -18,6 +18,9 @@ void NoclipMod::renderImGui() {
     {
         ImGui::SetTooltip("Prevents you from dying.");
     }
+    ImGui::SameLine(ImGui::GetWindowWidth() - 30);
+    ImGui::SetNextItemWidth(50);
+    ImGui::Button(">");
     if (lastToggled != toggled) {
         lastToggled = toggled;
         onToggle(toggled);
@@ -34,8 +37,6 @@ std::string NoclipMod::getTab() const {
 
 void NoclipMod::onToggle(bool toggled) {
     summit::Config::setValue<bool>("player.noclip.enabled", toggled);
-
-    geode::log::info("Safe mode toggled: {}", toggled);
 }
 
 #include <Geode/modify/PlayLayer.hpp>

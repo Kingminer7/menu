@@ -23,7 +23,7 @@ namespace summit::ui::imgui {
                     mod.second->renderImGui();
                 }
             }
-            ImGui::SetWindowSize(ImVec2(200, 200));
+            ImGui::SetWindowSize(ImVec2(225, 300));
             ImGui::End();   
         }
     }

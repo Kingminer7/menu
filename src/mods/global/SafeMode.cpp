@@ -34,8 +34,6 @@ std::string SafeModeMod::getTab() const {
 
 void SafeModeMod::onToggle(bool toggled) {
     summit::Config::setValue<bool>("global.safemode.enabled", toggled);
-
-    geode::log::info("Safe mode toggled: {}", toggled);
 }
 
 #include <Geode/modify/PlayLayer.hpp>
