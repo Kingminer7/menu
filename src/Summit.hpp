@@ -32,6 +32,7 @@ namespace summit {
             }
             template <typename T>
             static void setValue(std::string key, T value, bool saved = true) {
+                if (!initialized) initialize();
                 if (saved) {
                     config.set(key, value);
                     geode::Mod::get()->setSavedValue<std::string>("config", config.dump());
@@ -42,6 +43,7 @@ namespace summit {
 
             template <typename T>
             static void setValueIfUnset(std::string key, T value, bool saved = true) {
+                if (!initialized) initialize();
                 if (saved) {
                     if (!config.contains(key)) {
                         config.set(key, value);
@@ -53,6 +55,7 @@ namespace summit {
 
             template <typename T>
             static T getValue(std::string key, T defaultValue, bool saved = true) {
+                if (!initialized) initialize();
                 if (saved) return config.get<T>(key).unwrapOr(defaultValue);
                 else return temp.get<T>(key).unwrapOr(defaultValue);
             }
