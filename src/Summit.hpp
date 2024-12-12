@@ -21,7 +21,9 @@ namespace summit {
         public:
             static void initialize() {
                 if (!initialized) {
-                    config = geode::Mod::get()->getSavedValue<matjson::Value>("config");
+                    geode::log::info("{}", geode::Mod::get()->getSavedValue<std::string>("config"));
+                    config = matjson::parse(geode::Mod::get()->getSavedValue<std::string>("config")).unwrapOrDefault();
+                    // loop through and log all keys
                     temp = matjson::Value::object();
                     initialized = true;
                 } else {
@@ -32,7 +34,7 @@ namespace summit {
             static void setValue(std::string key, T value, bool saved = true) {
                 if (saved) {
                     config.set(key, value);
-                    geode::Mod::get()->setSavedValue<matjson::Value>("config", config);
+                    geode::Mod::get()->setSavedValue<std::string>("config", config.dump());
                 }
                 else temp.set(key, value);
             }
@@ -43,7 +45,7 @@ namespace summit {
                 if (saved) {
                     if (!config.contains(key)) {
                         config.set(key, value);
-                        geode::Mod::get()->setSavedValue<matjson::Value>("config", config);
+                        geode::Mod::get()->setSavedValue<std::string>("config", config.dump());
                     }
                 }
                 else if (!temp.contains(key)) temp.set(key, value);
