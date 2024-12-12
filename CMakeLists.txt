@@ -12,6 +12,7 @@ file(GLOB SOURCES
     src/ui/*/*.cpp
     src/utils/*.cpp
     src/hooks/*.cpp
+    src/Summit.cpp
 )
 
 add_library(${PROJECT_NAME} SHARED ${SOURCES})
