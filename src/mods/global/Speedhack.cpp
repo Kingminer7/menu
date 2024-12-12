@@ -59,9 +59,9 @@ void SpeedhackMod::onValueChange(float value) {
 }
 
 #include <Geode/modify/CCScheduler.hpp>
-class $modify(CCScheduler) {
+class $modify(cocos2d::CCScheduler) {
     void update(float delta) {
-        if (summit::Config::getValue("global.speedhack.enabled", false)) CCScheduler::update(delta * summit::Config::getValue("global.speedhack.value", 1.0));
-        else CCScheduler::update(delta);
+        if (summit::Config::getValue("global.speedhack.enabled", false)) cocos2d::CCScheduler::update(delta * summit::Config::getValue("global.speedhack.value", 1.0));
+        else cocos2d::CCScheduler::update(delta);
     }
 };
