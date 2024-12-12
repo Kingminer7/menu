@@ -39,7 +39,7 @@ void SpeedhackMod::renderImGui() {
 }
 
 std::string SpeedhackMod::getId() const {
-    return "TestMod";
+    return "global.speedhack";
 }
 
 std::string SpeedhackMod::getTab() const {
@@ -61,7 +61,55 @@ void SpeedhackMod::onValueChange(float value) {
 #include <Geode/modify/CCScheduler.hpp>
 class $modify(cocos2d::CCScheduler) {
     void update(float delta) {
-        if (summit::Config::getValue("global.speedhack.enabled", false)) cocos2d::CCScheduler::update(delta * summit::Config::getValue("global.speedhack.value", 1.0));
+        if (summit::Config::getValue("global.speedhack.enabled", false, false)) cocos2d::CCScheduler::update(delta * summit::Config::getValue("global.speedhack.value", 1.0));
         else cocos2d::CCScheduler::update(delta);
     }
 };
+
+
+void SpeedAudioMod::init() {
+    summit::Config::setValueIfUnset<bool>("global.speedhack.audio.enabled", false);
+    speedAudio = summit::Config::getValue<bool>("global.speedhack.audio.enabled", false);
+    lastSpeedAudio = speedAudio;
+}
+
+void SpeedAudioMod::update() {
+    for (auto i = 0; i < 4; i++) {
+        FMOD::Channel *channel;
+        FMODAudioEngine::get()->m_system->getChannel(i + 126, &channel);
+        if (channel) {
+            FMOD::Sound* sound;
+            channel->getCurrentSound(&sound);
+            float freq;
+            sound->getDefaults(&freq, nullptr);
+            if (speedAudio && summit::Config::getValue("global.speedhack.enabled", false, false)) channel->setFrequency(freq * summit::Config::getValue("global.speedhack.value", 1.0));
+            else channel->setFrequency(freq);
+        }
+    }
+}
+
+void SpeedAudioMod::renderImGui() {
+    ImGui::Checkbox("Speedhack Audio Sync", &speedAudio);
+    if (ImGui::IsItemHovered(ImGuiHoveredFlags_DelayShort))
+    {
+        ImGui::SetTooltip("Speeds up audio to match speedhack.");
+    }
+    if (lastSpeedAudio != speedAudio) {
+        lastSpeedAudio = speedAudio;
+        onToggleSpeed(speedAudio);
+    }
+}
+
+std::string SpeedAudioMod::getId() const {
+    return "global.speedhack.audio";
+}
+
+std::string SpeedAudioMod::getTab() const {
+    return "Global";
+}
+
+void SpeedAudioMod::onToggleSpeed(bool toggled) {
+    summit::Config::setValue<bool>("global.speedhack.audio.enabled", toggled);
+
+    geode::log::info("Speedhack audio toggled: {}", toggled);
+}

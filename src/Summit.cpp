@@ -1,3 +1,4 @@
+#include "mods/Mods.hpp"
 #include "Summit.hpp"
 
 namespace summit {
@@ -15,6 +16,27 @@ namespace summit {
     }
 }
 
+class UpdateManager : public cocos2d::CCObject {
+    protected:
+        UpdateManager() {
+            cocos2d::CCDirector::sharedDirector()->getScheduler()->scheduleSelector(schedule_selector(UpdateManager::update), this, 0, false);
+        }
+        static UpdateManager *instance;
+    public:
+        static UpdateManager *get() {
+            if (!instance) instance = new UpdateManager();
+            return instance;
+        }
+        void update(float dt) {
+            for (auto& [id, mod] : summit::mods::getMods()) {
+                mod->update();
+            }
+        }
+};
+
+UpdateManager* UpdateManager::instance = nullptr;
+
 $on_mod(Loaded) {
-    geode::log::info("{}", summit::Config::getValue<std::string>("awesome", "not awesome"));
+    // lol
+    UpdateManager::get();
 }

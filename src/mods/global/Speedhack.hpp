@@ -19,3 +19,18 @@ class SpeedhackMod : public summit::mods::Mod {
 };
 
 REGISTER_MOD(new SpeedhackMod());
+
+class SpeedAudioMod : public summit::mods::Mod {
+    private:
+        bool speedAudio = false;
+        bool lastSpeedAudio = false;
+    public:
+        void init() override;
+        void update() override;
+        void renderImGui() override;
+        std::string getId() const override;
+        std::string getTab() const override;
+        void onToggleSpeed(bool toggled);
+};
+
+REGISTER_MOD(new SpeedAudioMod());
