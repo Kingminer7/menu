@@ -57,3 +57,11 @@ void SpeedhackMod::onValueChange(float value) {
 
     geode::log::info("Speedhack value changed: {}", value);
 }
+
+#include <Geode/modify/CCScheduler.hpp>
+class $modify(CCScheduler) {
+    void update(float delta) {
+        if (toggled) CCScheduler::update(delta * value);
+        else CCScheduler::update(delta;
+    }
+};
