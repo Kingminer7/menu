@@ -17,6 +17,4 @@ namespace summit {
 
 $on_mod(Loaded) {
     geode::log::info("{}", summit::Config::getValue<std::string>("awesome", "not awesome"));
-    summit::Config::initialize();
-    geode::log::info("{}", summit::Config::getValue<std::string>("awesome", "not awesome"));
 }
