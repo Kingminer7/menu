@@ -66,7 +66,7 @@ namespace summit::ui::imgui {
                 dragging = "";
             }
             ImGui::SetCursorPosX((ImGui::GetWindowWidth() - ImGui::CalcTextSize(tab.c_str()).x) / 2);
-            ImGui::Text(tab.c_str());
+            ImGui::Text(TextUnformatted(tab.c_str()));
             ImGui::SetWindowFontScale(1.0f);
             for (auto mod : summit::mods::getModsInTab(tab)) {
                 mod.second->renderImGui();
@@ -84,7 +84,6 @@ namespace summit::ui::imgui {
 
     void UI::init() {
       auto* font = ImGui::GetIO().Fonts->AddFontFromFileTTF((geode::Mod::get()->getResourcesDir() / "CarmeRegular.ttf").string().c_str(), 16.0f);
-      font->Size = 26;
       ImGui::GetIO().FontDefault = font;
     }
 }
