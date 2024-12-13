@@ -16,6 +16,9 @@
 			"SM_summitSheet01": [
 				"resources/sprites/*.png"
 			]
-		}
+		},
+    "files": [
+      "resources/fonts/*/*.ttf"
+    ]
 	}
 }
