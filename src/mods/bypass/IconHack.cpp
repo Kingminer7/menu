@@ -29,7 +29,7 @@ std::string IconHackMod::getId() const {
 }
 
 std::string IconHackMod::getTab() const {
-    return "bypass";
+    return "Bypass";
 }
 
 void IconHackMod::onToggle(bool toggled) {
