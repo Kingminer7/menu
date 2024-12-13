@@ -27,7 +27,7 @@ void SpeedhackMod::renderImGui() {
     }
     ImGui::SameLine();
     ImGui::SetNextItemWidth(70);
-    ImGui::DragFloat("", &value, 0.1f, 0.1f, 1000.0f);
+    ImGui::DragFloat("##SpeedhackInput", &value, 0.1f, 0.1f, 1000.0f);
     if (ImGui::IsItemHovered(ImGuiHoveredFlags_DelayShort))
     {
         ImGui::SetTooltip("Speeds up the game speed.");

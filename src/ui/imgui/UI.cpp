@@ -78,10 +78,19 @@ namespace summit::ui::imgui {
             wasMouseDown = true;
         }
     }
+
+    // currentFont = Font::Carme;
+    // currentFontStyle = FontStyle::Regular;
+
+    void UI::init() {
+      auto* font = ImGui::GetIO().Fonts->AddFontFromFileTTF((geode::Mod::get()->getResourcesDir() / "Carme" / "Regular.ttf").string().c_str(), 16.0f);
+      ImGui::GetIO().FontDefault = font;
+    }
 }
 
 $on_mod(Loaded) {
     ImGuiCocos::get().setup([] {
+        summit::ui::imgui::get()->init();
     }).draw([] {
         summit::ui::imgui::get()->draw();
     });
