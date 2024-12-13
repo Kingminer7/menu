@@ -5,6 +5,7 @@ namespace summit {
     matjson::Value Config::config = matjson::Value::object();
     matjson::Value Config::temp = matjson::Value::object();
     bool Config::initialized = false;
+    bool Config::isVisible = false;
     ui::UIType Config::uiType = ui::UIType::ImGui;
 
     ui::UIType Config::getUIType() {

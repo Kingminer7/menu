@@ -37,4 +37,5 @@ namespace summit::mods {
 
     REGISTER_TAB("Global");
     REGISTER_TAB("Player");
+    REGISTER_TAB("Config");
 }

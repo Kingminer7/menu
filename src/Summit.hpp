@@ -18,7 +18,14 @@ namespace summit {
             static matjson::Value temp;
             static bool initialized;
             static ui::UIType uiType;
+            static bool isVisible;
         public:
+            static void toggleVisibility() {
+                isVisible = !isVisible;
+            }
+            static bool getVisibility() {
+                return isVisible;
+            }
             static void initialize() {
                 if (!initialized) {
                     config = matjson::parse(geode::Mod::get()->getSavedValue<std::string>("config")).unwrapOrDefault();
