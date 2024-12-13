@@ -66,7 +66,7 @@ namespace summit::ui::imgui {
                 dragging = "";
             }
             ImGui::SetCursorPosX((ImGui::GetWindowWidth() - ImGui::CalcTextSize(tab.c_str()).x) / 2);
-            ImGui::Text(TextUnformatted(tab.c_str()));
+            ImGui::TextUnformatted(tab.c_str());
             ImGui::SetWindowFontScale(1.0f);
             for (auto mod : summit::mods::getModsInTab(tab)) {
                 mod.second->renderImGui();
