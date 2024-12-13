@@ -83,7 +83,7 @@ namespace summit::ui::imgui {
     // currentFontStyle = FontStyle::Regular;
 
     void UI::init() {
-      auto* font = ImGui::GetIO().Fonts->AddFontFromFileTTF((geode::Mod::get()->getResourcesDir() / "Carme" / "Regular.ttf").string().c_str(), 16.0f);
+      auto* font = ImGui::GetIO().Fonts->AddFontFromFileTTF((geode::Mod::get()->getResourcesDir() / "CarmeRegular.ttf").string().c_str(), 16.0f);
       ImGui::GetIO().FontDefault = font;
     }
 }
