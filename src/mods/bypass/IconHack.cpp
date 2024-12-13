@@ -39,14 +39,14 @@ void IconHackMod::onToggle(bool toggled) {
 #include <Geode/modify/GameManager.hpp>
 class $modify(GameManager) {
     bool isIconUnlocked(int p0, IconType p1) {
-        if (summit::Config::getValue<bool>("mods.iconhack.enabled", false)) {
+        if (summit::Config::getValue<bool>("bypass.iconhack.enabled", false)) {
             return true;
         }
         return GameManager::isIconUnlocked(p0, p1);
     }
 
     bool isColorUnlocked(int p0, UnlockType p1) {
-        if (summit::Config::getValue<bool>("mods.iconhack.enabled", false)) {
+        if (summit::Config::getValue<bool>("bypass.iconhack.enabled", false)) {
             return true;
         }
         return GameManager::isColorUnlocked(p0, p1);
