@@ -153,6 +153,28 @@ namespace summit::ui::imgui {
         }
     }
 
+    bool pushFont(std::string font, std::string style) {
+        if (isFontStyleSupported(font, style)) {
+            auto imfont = imfonts[{font, style}];
+            ImGui::PushFont(imfont);
+            return true;
+        } else {
+            geode::log::warn("Font style {} is not supported for font {}", style, font);
+            if (imfonts.find({font, "Regular"}) == imfonts.end()) {
+                geode::log::warn("Could not find regular font for {}", font);
+                return false;
+            }
+            auto imfont = imfonts[{font, "Regular"}];
+            
+            ImGui::PushFont(imfont);
+            return true;
+        }
+    }
+
+    void popFont() {
+        ImGui::PopFont();
+    }
+
     bool isFontStyleSupported(std::string font, std::string style) {
         return std::find(availableStyles[font].begin(), availableStyles[font].end(), style) != availableStyles[font].end();
     }
