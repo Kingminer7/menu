@@ -1,5 +1,5 @@
 #include "MenuBall.hpp"
-#include "../../utils/Summit.hpp"
+#include "../../Summit.hpp"
 
 using namespace summit::ui::cocos;
 using namespace geode::prelude;
