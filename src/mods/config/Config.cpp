@@ -60,7 +60,7 @@ void ConfigMods::renderImGui() {
                 summit::Config::setValue<std::string>("config.font", font);
             }
             ImGui::SameLine();
-            ImGui::UnformattedText("test");
+            ImGui::Text("%s", "test");
             if (isSelected) {
                 ImGui::SetItemDefaultFocus();
             }
