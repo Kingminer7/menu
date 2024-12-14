@@ -54,15 +54,16 @@ void ConfigMods::renderImGui() {
     if (ImGui::BeginCombo("Font", currentFont.c_str())) {
         for (auto font : getFonts()) {
             bool isSelected = (currentFont == font);
+            setFont(font, "Regular");
             if (ImGui::Selectable(font.c_str(), isSelected)) {
                 currentFont = font;
                 summit::Config::setValue<std::string>("config.font", font);
-                setFont(currentFont, currentFontStyle);
             }
             if (isSelected) {
                 ImGui::SetItemDefaultFocus();
             }
         }
+        setFont(currentFont, currentFontStyle);
         ImGui::EndCombo();
     }
 
@@ -70,15 +71,16 @@ void ConfigMods::renderImGui() {
     if (ImGui::BeginCombo("Font Style", currentFontStyle.c_str())) {
         for (auto style : getFontStyles(currentFont)) {
             bool isSelected = (currentFontStyle == style);
+            setFont(currentFont, style);
             if (ImGui::Selectable(style.c_str(), isSelected)) {
                 currentFontStyle = style;
                 summit::Config::setValue<std::string>("config.fontstyle", style);
-                setFont(currentFont, currentFontStyle);
             }
             if (isSelected) {
                 ImGui::SetItemDefaultFocus();
             }
         }
+        setFont(currentFont, currentFontStyle);
         ImGui::EndCombo();
     }
 }
