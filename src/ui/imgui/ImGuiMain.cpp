@@ -94,6 +94,7 @@ namespace summit::ui::imgui {
         "OpenSansSemiCondensed",
         "Poppins",
         "Roboto",
+        "SourceCodePro",
         "Ubuntu"
     };
 
@@ -130,6 +131,7 @@ namespace summit::ui::imgui {
         {"OpenSansSemiCondensed", {"Bold", "BoldItalic", "ExtraBold", "ExtraBoldItalic", "Italic", "Light", "LightItalic", "Medium", "MediumItalic", "Regular", "SemiBold", "SemiBoldItalic"}},
         {"Poppins", {"Black", "BlackItalic", "Bold", "BoldItalic", "ExtraBold", "ExtraBoldItalic", "ExtraLight", "ExtraLightItalic", "Italic", "Light", "LightItalic", "Medium", "MediumItalic", "Regular", "SemiBold", "SemiBoldItalic", "Thin", "ThinItalic"}},
         {"Roboto", {"Black", "BlackItalic", "Bold", "BoldItalic", "Italic", "Light", "LightItalic", "Medium", "MediumItalic", "Regular", "Thin", "ThinItalic"}},
+        {"SourceCodePro", {"Black", "BlackItalic", "Bold", "BoldItalic", "ExtraBold", "ExtraBoldItalic", "ExtraLight", "ExtraLightItalic", "Italic", "Light", "LightItalic", "Medium", "MediumItalic", "Regular", "SemiBold", "SemiBoldItalic" }},
         {"Ubuntu", {"Bold", "BoldItalic", "Italic", "Light", "LightItalic", "Medium", "MediumItalic", "Regular"}}
     };
 
