@@ -4,12 +4,26 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_OSX_ARCHITECTURES "arm64;x86_64")
 set(CMAKE_CXX_VISIBILITY_PRESET hidden)
 
+if (DEFINED ENV{GITHUB_ACTIONS})
+    message("Github Actions Build")
+    add_definitions(-DGITHUB_ACTIONS)
+endif()
+
+if (DEFINED ENV{RELEASE_BUILD})
+    message("Building for release!")
+    add_definitions(-DRELEASE_BUILD)
+else()
+    message("Building for debug!")
+    add_definitions(-DDEBUG_BUILD)
+endif()
+
 project(Summit VERSION 1.0.0)
 
 file(GLOB SOURCES
     src/mods/*/*.cpp
     src/mods/*.cpp
     src/ui/*/*.cpp
+    src/ui/*/*/*.cpp
     src/utils/*.cpp
     src/hooks/*.cpp
     src/Summit.cpp

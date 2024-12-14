@@ -15,6 +15,8 @@ bool MenuBall::init() {
     return false;
   }
 
+  scheduleUpdate();
+
   instance = this;
 
   m_sprite = CCSprite::createWithSpriteFrameName("summitBtn.png"_spr);
@@ -34,8 +36,8 @@ bool MenuBall::init() {
   x = std::clamp(x, -getContentWidth() / 2, CCDirector::get()->getWinSize().width - getContentWidth() / 2);
   y = std::clamp(y, -getContentHeight() / 2, CCDirector::get()->getWinSize().height - getContentHeight() / 2);
   setPosition({x, y});
-  summit::Config::setValue("ballPosX", x);
-  summit::Config::setValue("ballPosY", y);
+  summit::Config::setValue<float>("ballPosX", x);
+  summit::Config::setValue<float>("ballPosY", y);
 
   setID("summit-button"_spr);
 
@@ -61,6 +63,8 @@ void MenuBall::registerWithTouchDispatcher() {
 
 bool MenuBall::ccTouchBegan(CCTouch *touch, CCEvent *evt) {
   // if (CocosMenu::get()) return false;
+  if (!isVisible())
+    return false;
   diff = getPosition() - touch->getLocation();
   startPos = new CCPoint(touch->getLocation());
   if (getScaledContentSize().width / 2 <
@@ -92,15 +96,25 @@ void MenuBall::ccTouchMoved(CCTouch *touch, CCEvent *evt) {
     pos.x = std::clamp(pos.x, -getContentWidth() / 2, CCDirector::get()->getWinSize().width - getContentWidth() / 2);
     pos.y = std::clamp(pos.y, -getContentHeight() / 2, CCDirector::get()->getWinSize().height - getContentHeight() / 2);
     setPosition(pos);
-    summit::Config::setValue("ballPosX", pos.x);
-    summit::Config::setValue("ballPosY", pos.y);
+    summit::Config::setValue<float>("ballPosX", pos.x);
+    summit::Config::setValue<float>("ballPosY", pos.y);
   }
 }
 
 void MenuBall::onPress() { 
   // CocosMenu::open();
   summit::Config::toggleVisibility();
- }
+}
+
+void MenuBall::update(float dt) {
+  #ifndef GEODE_IS_ANDROID
+  if (summit::Config::getValue<bool>("config.showball", false)) {
+    setVisible(true);
+  } else {
+    setVisible(false);
+  }
+  #endif
+}
 
 } // namespace summit::cocosui
 
@@ -118,7 +132,7 @@ class $modify(MenuLayer){
       firstML = true;
       queueInMainThread([this]() {
         geode::createQuickPopup("Summit Menu", "Alpha builds will rarely recieve support. Bugs you find are more than likely already known or fixed.", "Ok", "Do not show again", [this](auto, bool dontShow) {
-        if (dontShow) summit::Config::setValue("shownAlphaMessage", true);
+        if (dontShow) summit::Config::setValue<bool>("shownAlphaMessage", true);
       });
       });
     }

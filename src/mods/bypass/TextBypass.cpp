@@ -3,15 +3,15 @@
 #include "TextBypass.hpp"
 
 void TextBypassMod::init() {
-    summit::Config::setValueIfUnset("bypass.textlengthbypass.enabled", false);
+    summit::Config::setValueIfUnset<bool>("bypass.textlengthbypass.enabled", false);
     lengthBypass = summit::Config::getValue<bool>("bypass.textlengthbypass.enabled", false);
     lastLengthBypass = lengthBypass;
-    summit::Config::setValueIfUnset("bypass.textcharbypass.enabled", false);
+    summit::Config::setValueIfUnset<bool>("bypass.textcharbypass.enabled", false);
     charBypass = summit::Config::getValue<bool>("bypass.textcharbypass.enabled", false);
     lastCharBypass = charBypass;
 }
 
-void TextBypassMod::update() {
+void TextBypassMod::update(float dt) {
     
 }
 

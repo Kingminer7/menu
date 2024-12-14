@@ -3,12 +3,12 @@
 #include "Noclip.hpp"
 
 void NoclipMod::init() {
-    summit::Config::setValueIfUnset("player.noclip.enabled", true);
+    summit::Config::setValueIfUnset<bool>("player.noclip.enabled", true);
     toggled = summit::Config::getValue<bool>("player.noclip.enabled", true);
     lastToggled = toggled;
 }
 
-void NoclipMod::update() {
+void NoclipMod::update(float dt) {
     
 }
 
@@ -42,6 +42,6 @@ void NoclipMod::onToggle(bool toggled) {
 #include <Geode/modify/PlayLayer.hpp>
 class $modify (PlayLayer) {
     void destroyPlayer(PlayerObject *player, GameObject *obj) {
-        if (!summit::Config::getValue("player.noclip.enabled", false) || obj == m_anticheatSpike) PlayLayer::destroyPlayer(player, obj);
+        if (!summit::Config::getValue<bool>("player.noclip.enabled", false) || obj == m_anticheatSpike) PlayLayer::destroyPlayer(player, obj);
     }
 };

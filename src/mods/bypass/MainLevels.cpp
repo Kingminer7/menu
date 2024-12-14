@@ -3,12 +3,12 @@
 #include "MainLevels.hpp"
 
 void MainLevelsMod::init() {
-    summit::Config::setValueIfUnset("bypass.mainlevelbypass.enabled", false);
+    summit::Config::setValueIfUnset<bool>("bypass.mainlevelbypass.enabled", false);
     toggled = summit::Config::getValue<bool>("bypass.mainlevelbypass.enabled", false);
     lastToggled = toggled;
 }
 
-void MainLevelsMod::update() {
+void MainLevelsMod::update(float dt) {
     
 }
 

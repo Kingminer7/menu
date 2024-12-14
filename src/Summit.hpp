@@ -1,15 +1,8 @@
 #pragma once
 
 #include <Geode/Geode.hpp>
-#include "HookManager.hpp"
 
 namespace summit {
-    namespace ui {
-        enum class UIType {
-            ImGui,
-            Cocos
-        };
-    }
     class Config {
         private:
             Config() {};
@@ -17,25 +10,12 @@ namespace summit {
             static matjson::Value config;
             static matjson::Value temp;
             static bool initialized;
-            static ui::UIType uiType;
+            static std::string uiType;
             static bool isVisible;
         public:
-            static void toggleVisibility() {
-                isVisible = !isVisible;
-            }
-            static bool getVisibility() {
-                return isVisible;
-            }
-            static void initialize() {
-                if (!initialized) {
-                    config = matjson::parse(geode::Mod::get()->getSavedValue<std::string>("config")).unwrapOrDefault();
-                    // loop through and log all keys
-                    temp = matjson::Value::object();
-                    initialized = true;
-                } else {
-                    geode::log::warn("Config already initialized!");
-                }
-            }
+            static void toggleVisibility();
+            static bool getVisibility();
+            static void initialize();
             template <typename T>
             static void setValue(std::string key, T value, bool saved = true) {
                 if (!initialized) initialize();
@@ -66,7 +46,18 @@ namespace summit {
                 else return temp.get<T>(key).unwrapOr(defaultValue);
             }
 
-            static void setUIType(ui::UIType type);
-            static ui::UIType getUIType();
+            static void setUIType(std::string type);
+            static std::string getUIType();
     };
 }
+
+class UpdateManager : public cocos2d::CCObject {
+    protected:
+        UpdateManager() {
+            cocos2d::CCDirector::sharedDirector()->getScheduler()->scheduleSelector(schedule_selector(UpdateManager::update), this, 0, false);
+        }
+        static UpdateManager *instance;
+    public:
+        static UpdateManager* get();
+        void update(float dt);
+};

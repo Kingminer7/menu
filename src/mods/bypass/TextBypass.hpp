@@ -10,7 +10,7 @@ class TextBypassMod : public summit::mods::Mod {
         bool lastCharBypass = false;
     public:
         void init() override;
-        void update() override;
+        void update(float dt) override;
         void renderImGui() override;
         std::string getId() const override;
         std::string getTab() const override;

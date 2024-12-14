@@ -10,7 +10,7 @@ class SpeedhackMod : public summit::mods::Mod {
         float lastValue = 1.f;
     public:
         void init() override;
-        void update() override;
+        void update(float dt) override;
         void renderImGui() override;
         std::string getId() const override;
         std::string getTab() const override;
@@ -26,7 +26,7 @@ class SpeedAudioMod : public summit::mods::Mod {
         bool lastSpeedAudio = false;
     public:
         void init() override;
-        void update() override;
+        void update(float dt) override;
         void renderImGui() override;
         std::string getId() const override;
         std::string getTab() const override;

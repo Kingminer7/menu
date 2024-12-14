@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Summit.hpp"
+#include <Geode/Geode.hpp>
 
 namespace summit::hooks {
     bool registerHook(geode::Hook *hook, std::string id);

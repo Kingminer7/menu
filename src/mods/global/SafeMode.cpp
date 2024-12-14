@@ -3,12 +3,12 @@
 #include "SafeMode.hpp"
 
 void SafeModeMod::init() {
-    summit::Config::setValueIfUnset("global.safemode.enabled", true);
+    summit::Config::setValueIfUnset<bool>("global.safemode.enabled", true);
     toggled = summit::Config::getValue<bool>("global.safemode.enabled", true);
     lastToggled = toggled;
 }
 
-void SafeModeMod::update() {
+void SafeModeMod::update(float dt) {
     
 }
 
@@ -39,7 +39,7 @@ void SafeModeMod::onToggle(bool toggled) {
 #include <Geode/modify/PlayLayer.hpp>
 class $modify (PlayLayer) {
     void levelComplete() {
-        if (summit::Config::getValue("global.safemode.enabled", false)) {
+        if (summit::Config::getValue<bool>("global.safemode.enabled", false)) {
             auto orig = m_isTestMode;
             m_isTestMode = true;
             PlayLayer::levelComplete();
@@ -48,7 +48,7 @@ class $modify (PlayLayer) {
     }
 
     void destroyPlayer(PlayerObject *p, GameObject *g) {
-        if (summit::Config::getValue("global.safemode.enabled", false)) {
+        if (summit::Config::getValue<bool>("global.safemode.enabled", false)) {
             auto orig = m_isTestMode;
             m_isTestMode = true;
             PlayLayer::destroyPlayer(p,g);

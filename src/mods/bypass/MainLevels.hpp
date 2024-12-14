@@ -8,7 +8,7 @@ class MainLevelsMod : public summit::mods::Mod {
         bool lastToggled = false;
     public:
         void init() override;
-        void update() override;
+        void update(float dt) override;
         void renderImGui() override;
         std::string getId() const override;
         std::string getTab() const override;

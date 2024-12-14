@@ -3,12 +3,12 @@
 #include "IconHack.hpp"
 
 void IconHackMod::init() {
-    summit::Config::setValueIfUnset("bypass.iconhack.enabled", false);
+    summit::Config::setValueIfUnset<bool>("bypass.iconhack.enabled", false);
     toggled = summit::Config::getValue<bool>("bypass.iconhack.enabled", false);
     lastToggled = toggled;
 }
 
-void IconHackMod::update() {
+void IconHackMod::update(float dt) {
     
 }
 

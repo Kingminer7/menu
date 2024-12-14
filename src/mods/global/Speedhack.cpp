@@ -11,7 +11,7 @@ void SpeedhackMod::init() {
     lastValue = value;
 }
 
-void SpeedhackMod::update() {
+void SpeedhackMod::update(float dt) {
     
 }
 
@@ -58,7 +58,7 @@ void SpeedhackMod::onValueChange(float value) {
 #include <Geode/modify/CCScheduler.hpp>
 class $modify(cocos2d::CCScheduler) {
     void update(float delta) {
-        if (summit::Config::getValue("global.speedhack.enabled", false, false)) cocos2d::CCScheduler::update(delta * summit::Config::getValue("global.speedhack.value", 1.0));
+        if (summit::Config::getValue<bool>("global.speedhack.enabled", false, false)) cocos2d::CCScheduler::update(delta * summit::Config::getValue<float>("global.speedhack.value", 1.0));
         else cocos2d::CCScheduler::update(delta);
     }
 };
@@ -70,7 +70,7 @@ void SpeedAudioMod::init() {
     lastSpeedAudio = speedAudio;
 }
 
-void SpeedAudioMod::update() {
+void SpeedAudioMod::update(float dt) {
     for (auto i = 0; i < 4; i++) {
         FMOD::Channel *channel;
         FMODAudioEngine::get()->m_system->getChannel(i + 126, &channel);
@@ -79,7 +79,7 @@ void SpeedAudioMod::update() {
             channel->getCurrentSound(&sound);
             float freq;
             sound->getDefaults(&freq, nullptr);
-            if (speedAudio && summit::Config::getValue("global.speedhack.enabled", false, false)) channel->setFrequency(freq * summit::Config::getValue("global.speedhack.value", 1.0));
+            if (speedAudio && summit::Config::getValue<bool>("global.speedhack.enabled", false, false)) channel->setFrequency(freq * summit::Config::getValue<float>("global.speedhack.value", 1.0));
             else channel->setFrequency(freq);
         }
     }

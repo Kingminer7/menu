@@ -31,6 +31,7 @@ namespace summit::ui::cocos {
     public:
         static MenuBall *get();
         void onPress();
+        void update(float dt);
     };
 
 }
