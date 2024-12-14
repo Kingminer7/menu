@@ -8,7 +8,7 @@ void ConfigMods::init() {
     lastShowBall = showBall;
 
     summit::Config::setValueIfUnset<float>("config.uiscale", 1.f);
-    uiScale = summit::Config::getValue<bool>("config.uiscale", 1.f);
+    uiScale = summit::Config::getValue<float>("config.uiscale", 1.f);
     lastUiScale = uiScale;
     setScale(uiScale);
 
@@ -18,7 +18,9 @@ void ConfigMods::init() {
     currentFontStyle = summit::Config::getValue<std::string>("config.fontstyle", "Regular");
     lastFont = currentFont;
     lastFontStyle = currentFontStyle;
-    // setFont(currentFont, currentFontStyle);
+    geode::queueInMainThread([this]() {
+        setFont(currentFont, currentFontStyle);
+    });
 }
 
 void ConfigMods::update(float dt) {
@@ -94,6 +96,6 @@ void ConfigMods::onShowBall(bool value) {
 }
 
 void ConfigMods::onUiScale(float value) {
-    summit::Config::setValue<bool>("config.uiscale", value);
+    summit::Config::setValue<float>("config.uiscale", value);
     setScale(value);
 }
