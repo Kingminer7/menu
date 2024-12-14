@@ -76,13 +76,13 @@ void ConfigMods::renderImGui() {
             if (ImGui::Selectable(style.c_str(), isSelected)) {
                 currentFontStyle = style;
                 summit::Config::setValue<std::string>("config.fontstyle", style);
+                setFont(currentFont, currentFontStyle);
             }
             if (isSelected) {
                 ImGui::SetItemDefaultFocus();
             }
             popFont();
         }
-        setFont(currentFont, currentFontStyle);
         ImGui::EndCombo();
     }
 }
