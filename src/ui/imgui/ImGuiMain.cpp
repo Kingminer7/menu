@@ -57,7 +57,7 @@ namespace summit::ui::imgui {
             }
             ImGui::SetWindowFontScale(.5f * scale);
             ImGui::SetCursorPos(ImVec2(ImGui::GetWindowWidth() / 2 - ImGui::CalcTextSize(tab.c_str()).x / 2, 4 * scale));
-            ImGui::Text(tab.c_str());
+            ImGui::Text("%s", tab.c_str());
             ImGui::SetCursorPos(ImVec2(8, 38 * scale));
             ImGui::SetWindowFontScale(1.f/3 * scale);
             for (auto mod : summit::mods::getModsInTab(tab)) {
