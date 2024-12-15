@@ -28,7 +28,7 @@ void NoclipMod::renderImGui() {
     }
     ImGui::SameLine(ImGui::GetWindowWidth() - 55);
     ImGui::SetNextItemWidth(100);
-    if (ImGui::Button(">")) ImGui::OpenPopup("Noclip");
+    if (ImGui::Button(" > ")) ImGui::OpenPopup("Noclip");
         if (ImGui::BeginPopup("Noclip")) {
         ImGui::Checkbox("Player 1", &player1);
         if (ImGui::IsItemHovered(ImGuiHoveredFlags_DelayShort))
