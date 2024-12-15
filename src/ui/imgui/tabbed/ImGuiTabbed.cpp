@@ -17,7 +17,7 @@ namespace summit::ui::imgui::tabbed {
     }
     
     void ImGuiTabbed::open() {
-
+        visible = !visible;
     }
 
     void ImGuiTabbed::close() {
