@@ -1,0 +1,9 @@
+#pragma once
+
+namespace summit::ui::imgui {
+    void draw();
+    void init();
+
+    float getScale();
+    void setScale(float newScale);
+}

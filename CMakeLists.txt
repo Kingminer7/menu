@@ -19,14 +19,9 @@ endif()
 
 project(Summit VERSION 1.0.0)
 
-file(GLOB SOURCES
-    src/mods/*/*.cpp
-    src/mods/*.cpp
-    src/ui/*/*.cpp
-    src/ui/*/*/*.cpp
-    src/utils/*.cpp
-    src/hooks/*.cpp
-    src/Summit.cpp
+file(GLOB_RECURSE SOURCES
+    src/*.cpp
+    
 )
 
 add_library(${PROJECT_NAME} SHARED ${SOURCES})

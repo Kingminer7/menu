@@ -1,28 +1,16 @@
-#include "mods/Mods.hpp"
+// #include "mods/Mods.hpp"
 #include "Summit.hpp"
 
 namespace summit {
     matjson::Value Config::config = matjson::Value::object();
     matjson::Value Config::temp = matjson::Value::object();
     bool Config::initialized = false;
-    std::string Config::uiType = "";
-    bool Config::isVisible = true;
-
-    std::string Config::getUIType() {
-        if (uiType == "") {
-            Config::setValueIfUnset<std::string>("config.uitype", "imgui");
-            uiType = Config::getValue<std::string>("config.uitype", "imgui");
-        }
-        return uiType;
-    }
-
-    void Config::setUIType(std::string type) {
-        uiType = type;
-        setValue<std::string>("config.uitype", type);
-    }
+    bool Config::initializing = false;
+    std::string Config::uiStyle = "";
 
     void Config::initialize() {
-        if (!initialized) {
+        if (!initialized && !initializing) {
+            initializing = true;
             config = matjson::parse(geode::Mod::get()->getSavedValue<std::string>("config")).unwrapOrDefault();
             temp = matjson::Value::object();
             initialized = true;
@@ -33,11 +21,13 @@ namespace summit {
         }
     }
 
-    void Config::toggleVisibility() {
-        isVisible = !isVisible;
+    void Config::setUIStyle(std::string style) {
+        uiStyle = style;
+        setValue<std::string>("uiStyle", style);
     }
-    bool Config::getVisibility() {
-        return isVisible;
+
+    std::string Config::getUIStyle() {
+        return uiStyle;
     }
 }
 
@@ -47,14 +37,26 @@ UpdateManager *UpdateManager::get() {
 }
 
 void UpdateManager::update(float dt)  {
-    for (auto& [id, mod] : summit::mods::getMods()) {
-        mod->update(dt);
-    }
+    // for (auto& [id, mod] : summit::mods::getMods()) {
+    //     mod->update(dt);
+    // }
+}
+
+bool UpdateManager::registerUpdate(std::string id, std::function<void(float)> update) {
+    if (callbacks.find(id) != callbacks.end()) return false;
+    callbacks[id] = update;
+    return true;
+}
+
+bool UpdateManager::removeUpdate(std::string id) {
+    if (callbacks.find(id) == callbacks.end()) return false;
+    callbacks.erase(id);
+    return true;
 }
 
 UpdateManager* UpdateManager::instance = nullptr;
 
 $on_mod(Loaded) {
-    // lol
+    // just so it starts
     UpdateManager::get();
 }

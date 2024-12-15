@@ -1,5 +1,7 @@
 #include <imgui-cocos.hpp>
 #include "../../Summit.hpp"
+#include "../../ui/imgui/FontManager.hpp"
+#include "../../ui/UIManager.hpp"
 #include "Config.hpp"
 
 void ConfigMods::init() {
@@ -10,7 +12,7 @@ void ConfigMods::init() {
     summit::Config::setValueIfUnset<float>("config.uiscale", 1.f);
     uiScale = summit::Config::getValue<float>("config.uiscale", 1.f);
     lastUiScale = uiScale;
-    setScale(uiScale);
+    summit::ui::setUIScale(uiScale);
 
     summit::Config::setValueIfUnset<std::string>("config.font", "Carme");
     summit::Config::setValueIfUnset<std::string>("config.fontstyle", "Regular");
@@ -19,7 +21,7 @@ void ConfigMods::init() {
     lastFont = currentFont;
     lastFontStyle = currentFontStyle;
     geode::queueInMainThread([this]() {
-        setFont(currentFont, currentFontStyle);
+        summit::ui::imgui::setFont(currentFont, currentFontStyle);
     });
 }
 
@@ -52,36 +54,36 @@ void ConfigMods::renderImGui() {
 
     // Dropdown of fonts
     if (ImGui::BeginCombo("Font", currentFont.c_str())) {
-        for (auto font : getFonts()) {
+        for (auto font : summit::ui::imgui::getFonts()) {
             bool isSelected = (currentFont == font);
-            pushFont(font, "Regular");
+            summit::ui::imgui::pushFont(font, "Regular");
             if (ImGui::Selectable(font.c_str(), isSelected)) {
                 currentFont = font;
                 summit::Config::setValue<std::string>("config.font", font);
-                setFont(currentFont, currentFontStyle);
+                summit::ui::imgui::setFont(currentFont, currentFontStyle);
             }
             if (isSelected) {
                 ImGui::SetItemDefaultFocus();
             }
-            popFont();
+            summit::ui::imgui::popFont();
         }
         ImGui::EndCombo();
     }
 
     // Dropdown of font styles usable with the current font
     if (ImGui::BeginCombo("Font Style", currentFontStyle.c_str())) {
-        for (auto style : getFontStyles(currentFont)) {
+        for (auto style : summit::ui::imgui::getFontStyles(currentFont)) {
             bool isSelected = (currentFontStyle == style);
-            pushFont(currentFont, style);
+            summit::ui::imgui::pushFont(currentFont, style);
             if (ImGui::Selectable(style.c_str(), isSelected)) {
                 currentFontStyle = style;
                 summit::Config::setValue<std::string>("config.fontstyle", style);
-                setFont(currentFont, currentFontStyle);
+                summit::ui::imgui::setFont(currentFont, currentFontStyle);
             }
             if (isSelected) {
                 ImGui::SetItemDefaultFocus();
             }
-            popFont();
+            summit::ui::imgui::popFont();
         }
         ImGui::EndCombo();
     }
@@ -101,5 +103,5 @@ void ConfigMods::onShowBall(bool value) {
 
 void ConfigMods::onUiScale(float value) {
     summit::Config::setValue<float>("config.uiscale", value);
-    setScale(value);
+    summit::ui::setUIScale(value);
 }

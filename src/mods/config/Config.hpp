@@ -1,9 +1,6 @@
 #pragma once
 
 #include "../Mods.hpp"
-#include "../../ui/imgui/ImGuiMain.hpp"
-
-using namespace summit::ui::imgui;
 
 class ConfigMods : public summit::mods::Mod {
     private:

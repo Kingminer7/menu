@@ -1,86 +1,12 @@
 #include <imgui-cocos.hpp>
-#include "ImGuiMain.hpp"
-#include "../../Summit.hpp"
-#include "../../mods/Mods.hpp"
+#include "FontManager.hpp"
 
 namespace summit::ui::imgui {
-    static float scale = 1.f;
-    bool wasMouseDown = false;
-    std::string dragging = "";
-    ImVec2 dragOffset = ImVec2(0, 0);
-    ImVec2 windowPos = ImVec2(30, 30);
-    bool firstDraw = true;
     // font, style
     std::map<std::pair<std::string, std::string>, ImFont*> imfonts = {};
 
-    void draw() {
-        // TODO: this
-        if (!summit::Config::getVisibility() || summit::Config::getUIType() != "imgui") return;
-        ImGuiWindowFlags window_flags = 0;
-        window_flags |= ImGuiWindowFlags_NoResize;
-        window_flags |= ImGuiWindowFlags_NoTitleBar;
-        window_flags |= ImGuiWindowFlags_NoBackground;
-        window_flags |= ImGuiWindowFlags_NoMove;
-        for (auto tab : summit::mods::getTabs()) {
-            ImGui::Begin(tab.c_str(), nullptr, window_flags);
-            ImGui::SetWindowFontScale(1.f/3 * scale);
-            ImGui::SetWindowSize(ImVec2(225.f * scale, 300.f * scale));
-            if (firstDraw) {
-                ImGui::SetWindowPos(windowPos);
-                windowPos = ImVec2(windowPos.x + 235 * scale, windowPos.y);
-            }
-            auto drawList = ImGui::GetWindowDrawList();
-            drawList->AddRectFilled(
-                ImGui::GetWindowPos(),
-                ImVec2(ImGui::GetWindowPos().x + ImGui::GetWindowWidth(), ImGui::GetWindowPos().y + ImGui::GetWindowHeight()),
-                IM_COL32(47, 49, 66, 240)
-            );
-            drawList->AddRectFilled(
-                ImGui::GetWindowPos(),
-                ImVec2(ImGui::GetWindowPos().x + ImGui::GetWindowWidth(), ImGui::GetWindowPos().y + 30 * scale),
-                IM_COL32(0, 174, 255, 255)
-            );
-            if (ImGui::GetIO().MouseDown[0]) {
-                if (wasMouseDown) {
-                    if (dragging == tab) {
-                        ImGui::SetWindowPos(ImVec2(ImGui::GetWindowPos().x + ImGui::GetIO().MouseDelta.x, ImGui::GetWindowPos().y + ImGui::GetIO().MouseDelta.y));
-                    }
-                } else {
-                    if (ImGui::IsMouseHoveringRect(ImGui::GetWindowPos(), ImVec2(ImGui::GetWindowPos().x + ImGui::GetWindowWidth(), ImGui::GetWindowPos().y + 30 * scale))) {
-                        dragging = tab;
-                        dragOffset = ImVec2(ImGui::GetIO().MousePos.x - ImGui::GetWindowPos().x, ImGui::GetIO().MousePos.y - ImGui::GetWindowPos().y);
-                    }
-                }
-            } else {
-                wasMouseDown = false;
-                dragging = "";
-            }
-            ImGui::SetWindowFontScale(.5f * scale);
-            ImGui::SetCursorPos(ImVec2(ImGui::GetWindowWidth() / 2 - ImGui::CalcTextSize(tab.c_str()).x / 2, 4 * scale));
-            ImGui::Text("%s", tab.c_str());
-            ImGui::SetCursorPos(ImVec2(8, 38 * scale));
-            ImGui::SetWindowFontScale(1.f/3 * scale);
-            for (auto mod : summit::mods::getModsInTab(tab)) {
-                mod.second->renderImGui();
-            }
-            ImGui::End();
-        }
-        firstDraw = false;
-        if (ImGui::GetIO().MouseDown[0]) {
-            wasMouseDown = true;
-        }
-    }
-
     std::string currentFont = "Carme";
     std::string currentFontStyle = "Regular";
-
-    float getScale() {
-        return scale;
-    }
-
-    void setScale(float newScale) {
-        scale = newScale;
-    }
 
     std::vector<std::string> fonts = {
         "Alegreya",
@@ -191,6 +117,10 @@ namespace summit::ui::imgui {
         return availableStyles[font];
     }
 
+    std::map<std::pair<std::string, std::string>, ImFont*> getImFonts() {
+        return imfonts;
+    }
+
     void init() {
         for (auto& [font, styles] : availableStyles) {
             for (auto& style : styles) {
@@ -205,17 +135,4 @@ namespace summit::ui::imgui {
         if (imfonts.find({"Carme", "Regular"}) != imfonts.end())
             ImGui::GetIO().FontDefault = imfonts[{"Carme", "Regular"}];
     }
-
-    std::map<std::pair<std::string, std::string>, ImFont*> getImFonts() {
-        return imfonts;
-    }
-
-}
-
-$on_mod(Loaded) {
-    ImGuiCocos::get().setup([] {
-        summit::ui::imgui::init();
-    }).draw([] {
-        summit::ui::imgui::draw();
-    });
 }
