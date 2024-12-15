@@ -1,5 +1,6 @@
 #include "UIManager.hpp"
 #include <imgui-cocos.hpp>
+#include "imgui/FontManager.hpp"
 #include "../Summit.hpp"
 
 namespace summit::ui {
@@ -49,6 +50,8 @@ $on_mod(Loaded) {
         for (auto& [name, style] : summit::ui::styles) {
             style->init();
         }
+
+        summit::ui::imgui::init();
 
         summit::ui::setStyle(summit::Config::getValue<std::string>("config.uistyle", "ImGui Tabbed"));
     }).draw([] {
