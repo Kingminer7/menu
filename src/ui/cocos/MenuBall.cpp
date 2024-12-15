@@ -1,5 +1,6 @@
 #include "MenuBall.hpp"
 #include "../../Summit.hpp"
+#include "../UIManager.hpp"
 
 using namespace summit::ui::cocos;
 using namespace geode::prelude;
@@ -103,7 +104,7 @@ void MenuBall::ccTouchMoved(CCTouch *touch, CCEvent *evt) {
 
 void MenuBall::onPress() { 
   // CocosMenu::open();
-  summit::Config::toggleVisibility();
+  if (auto uis = summit::ui::getCurrentStyle()) uis->open();
 }
 
 void MenuBall::update(float dt) {
