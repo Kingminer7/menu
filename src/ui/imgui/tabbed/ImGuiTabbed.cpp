@@ -25,7 +25,9 @@ namespace summit::ui::imgui::tabbed {
     }
 
     void ImGuiTabbed::draw() {
+        geode::log::info("drawin");
         if (!visible || getCurrentStyle() != this) return;
+        geode::log::info("continuing");
         ImGuiWindowFlags window_flags = ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoMove;
         for (auto tab : summit::mods::getTabs()) {
             ImGui::Begin(tab.c_str(), nullptr, window_flags);
