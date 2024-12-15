@@ -42,6 +42,7 @@ void ConfigMods::renderImGui() {
     }
     #endif
 
+    ImGui::SetNextItemWidth(100);
     ImGui::InputFloat("UI Scale", &uiScale);
     if (ImGui::IsItemHovered(ImGuiHoveredFlags_DelayShort))
     {
@@ -52,7 +53,7 @@ void ConfigMods::renderImGui() {
         lastUiScale = uiScale;
     }
 
-    // Dropdown of fonts
+    ImGui::SetNextItemWidth(125);
     if (ImGui::BeginCombo("Font", currentFont.c_str())) {
         for (auto font : summit::ui::imgui::getFonts()) {
             bool isSelected = (currentFont == font);
@@ -69,8 +70,12 @@ void ConfigMods::renderImGui() {
         }
         ImGui::EndCombo();
     }
+    if (ImGui::IsItemHovered(ImGuiHoveredFlags_DelayShort))
+    {
+        ImGui::SetTooltip("Change the font used in the UI.");
+    }
 
-    // Dropdown of font styles usable with the current font
+    ImGui::SetNextItemWidth(125);
     if (ImGui::BeginCombo("Font Style", currentFontStyle.c_str())) {
         for (auto style : summit::ui::imgui::getFontStyles(currentFont)) {
             bool isSelected = (currentFontStyle == style);
@@ -86,6 +91,10 @@ void ConfigMods::renderImGui() {
             summit::ui::imgui::popFont();
         }
         ImGui::EndCombo();
+    }
+    if (ImGui::IsItemHovered(ImGuiHoveredFlags_DelayShort))
+    {
+        ImGui::SetTooltip("Change the style of the font used in the UI.");
     }
 }
 

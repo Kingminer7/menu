@@ -16,6 +16,7 @@ void IconHackMod::renderImGui() {
     ImGui::Checkbox("Icon Hack", &toggled);
     if (ImGui::IsItemHovered(ImGuiHoveredFlags_DelayShort))
     {
+        ImGui::SetNextWindowSize(ImVec2(80.f, 30.f), ImGuiCond_FirstUseEver);
         ImGui::SetTooltip("Lets you use any icon");
     }
     if (lastToggled != toggled) {

@@ -26,7 +26,7 @@ void NoclipMod::renderImGui() {
     {
         ImGui::SetTooltip("Prevents you from dying.");
     }
-    ImGui::SameLine(ImGui::GetWindowWidth() - 55);
+    ImGui::SameLine(ImGui::GetWindowWidth() - 35);
     ImGui::SetNextItemWidth(100);
     if (ImGui::Button(" > ")) ImGui::OpenPopup("Noclip");
         if (ImGui::BeginPopup("Noclip")) {

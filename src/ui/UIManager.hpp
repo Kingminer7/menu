@@ -7,6 +7,7 @@ namespace summit::ui {
             virtual std::string getName() = 0;
             virtual void open() = 0;
             virtual void close() = 0;
+            virtual void toggle() = 0;
             // on non-imgui styles, this will probably be ignored.
             virtual void draw() = 0;
     };

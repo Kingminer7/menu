@@ -128,7 +128,7 @@ namespace summit::ui::imgui {
                     geode::log::warn("Could not find font file for {}-{}", font, style);
                     continue;
                 }    
-                auto* imfont = ImGui::GetIO().Fonts->AddFontFromFileTTF((geode::Mod::get()->getResourcesDir() / (font + "-" + style + ".ttf")).string().c_str(), 48.0f);
+                auto* imfont = ImGui::GetIO().Fonts->AddFontFromFileTTF((geode::Mod::get()->getResourcesDir() / (font + "-" + style + ".ttf")).string().c_str(), 60.0f);
                 imfonts[{font, style}] = imfont;
             }
         }

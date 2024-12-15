@@ -104,7 +104,7 @@ void MenuBall::ccTouchMoved(CCTouch *touch, CCEvent *evt) {
 
 void MenuBall::onPress() { 
   // CocosMenu::open();
-  if (auto uis = summit::ui::getCurrentStyle()) uis->open();
+  if (auto uis = summit::ui::getCurrentStyle()) uis->toggle();
 }
 
 void MenuBall::update(float dt) {
