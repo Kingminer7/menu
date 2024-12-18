@@ -39,4 +39,5 @@ namespace summit::mods {
     REGISTER_TAB("Player");
     REGISTER_TAB("Bypass");
     REGISTER_TAB("Config");
+    REGISTER_TAB("Shortcuts");
 }
