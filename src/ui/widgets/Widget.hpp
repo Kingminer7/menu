@@ -16,9 +16,11 @@ namespace summit::ui::widgets {
       std::string m_id;
       std::string m_label;
       std::string m_description;
+      std::string m_tab;
       std::vector<Component*> m_components;
-      Widget() {}
-      void init() {}
+      Widget(std::string id) {
+        m_id = id;
+      }
     public:
       // these all return the widget so you can call things like myWidget->addThing()->setThat() etc
       // @brief Adds a toggle to the widget
@@ -33,13 +35,14 @@ namespace summit::ui::widgets {
       // @brief Sets the description of the widget
       Widget *setDescription(std::string desc);
       
-      // @brief Register this option with the UI
-      Widget *registerOption();
-      // @brief Unregister this option with the UI
+      // @brief Register this option to a tab in the UI
+      Widget *registerOption(std::string tab);
+      // @brief Unregister this option from the UI
       Widget *unregisterOption();
 
+      // @brief Create a new widget
       static Widget *create(std::string id) {
-        return new Widget();
+        return new Widget(id);
       }
   };
 }

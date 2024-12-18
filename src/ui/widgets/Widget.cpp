@@ -32,7 +32,7 @@ namespace summit::ui::widgets {
     return this;
   }
 
-  Widget *Widget::registerOption() {
+  Widget *Widget::registerOption(std::string tab) {
     return this;
   }
 
