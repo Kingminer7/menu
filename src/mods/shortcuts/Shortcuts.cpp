@@ -3,7 +3,7 @@
 #include "Shortcuts.hpp"
 
 void ShortcutsMod::init() {
-    m_settingsCall = menu_selector(MenuLayer::onOptions);
+    
 }
 
 void ShortcutsMod::update(float dt) {
@@ -11,8 +11,12 @@ void ShortcutsMod::update(float dt) {
 }
 
 void ShortcutsMod::renderImGui() {
-    if (ImGui::Button("Safe Mode")) {
-        m_settingsCall(nullptr);
+    if (ImGui::Button("Settings")) {
+        OptionsLayer* layer = OptionsLayer::create();
+        int z = cocos2d::CCDirector::get()->getRunningScene()->getHighestChildZ();
+        if(z == INT_MAX) return;
+        layer->setZOrder(z + 1);
+        layer->showLayer(false);
     }
     if (ImGui::IsItemHovered(ImGuiHoveredFlags_DelayShort))
     {
