@@ -3,7 +3,7 @@
 #include "Shortcuts.hpp"
 
 void ShortcutsMod::init() {
-    
+    m_settingsCall = menu_selector(MenuLayer::onOptions);
 }
 
 void ShortcutsMod::update(float dt) {
