@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../../UIManager.hpp"
+#include "../UIManager.hpp"
 #include <imgui-cocos.hpp>
 
 namespace summit::ui::cocos {
