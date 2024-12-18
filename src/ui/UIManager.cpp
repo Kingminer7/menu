@@ -43,6 +43,30 @@ namespace summit::ui {
     UIStyle* getCurrentStyle() {
         return currentStyle;
     }
+
+    std::unordered_map<std::string, widgets::Widget*> widgetMap = {};
+    
+    void registerWidget(widgets::Widget *widget) {
+        widgetMap[widget->getId()] = widget;
+    }
+
+    void unregisterWidget(widgets::Widget *widget) {
+        widgetMap.erase(widget->getId());
+    }
+
+    std::unordered_map<std::string, widgets::Widget*> getWidgets() {
+        return widgetMap;
+    }
+
+    std::unordered_map<std::string, widgets::Widget*> getWidgets(std::string tab) {
+        std::unordered_map<std::string, widgets::Widget*> tabWidgets;
+        for (auto& [id, widget] : widgetMap) {
+            if (widget->getTab() == tab) {
+                tabWidgets[id] = widget;
+            }
+        }
+        return tabWidgets;
+    }
 }
 
 $on_mod(Loaded) {

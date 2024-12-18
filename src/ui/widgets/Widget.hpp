@@ -28,6 +28,7 @@ namespace summit::ui::widgets {
       // @brief Adds a button to the widget
       Widget *addButton(std::string id, std::function<void()> callback);
 
+      // @brief Removes a component from the widget.
       Widget *remove(std::string id);
 
       // @brief Sets the label of the widget
@@ -39,6 +40,31 @@ namespace summit::ui::widgets {
       Widget *registerOption(std::string tab);
       // @brief Unregister this option from the UI
       Widget *unregisterOption();
+
+      // @brief Get the ID of the widget
+      std::string getId() {
+        return m_id;
+      }
+
+      // @brief Get the label of the widget
+      std::string getLabel() {
+        return m_label;
+      }
+
+      // @brief Get the description of the widget
+      std::string getDescription() {
+        return m_description;
+      }
+
+      // @brief Get the tab of the widget
+      std::string getTab() {
+        return m_tab;
+      }
+
+      // @brief Get the components of the widget
+      std::vector<Component*> getComponents() {
+        return m_components;
+      }
 
       // @brief Create a new widget
       static Widget *create(std::string id) {

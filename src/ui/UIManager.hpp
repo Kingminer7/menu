@@ -1,5 +1,7 @@
 #pragma once
 
+#include "widgets/Widget.hpp"
+
 namespace summit::ui {
     class UIStyle {
         public:
@@ -20,6 +22,11 @@ namespace summit::ui {
     std::vector<std::string> getStyles(std::string type); 
     void setStyle(std::string type, std::string style);
     UIStyle* getCurrentStyle();
+
+    void registerWidget(widgets::Widget *widget);
+    void unregisterWidget(widgets::Widget *widget);
+    std::unordered_map<std::string, widgets::Widget*> getWidgets();
+    std::unordered_map<std::string, widgets::Widget*> getWidgets(std::string tab);
 
     #define REGISTER_STYLE(style) $execute{ registerStyle(new style()); }
 }
