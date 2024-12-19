@@ -4,6 +4,11 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_OSX_ARCHITECTURES "arm64;x86_64")
 set(CMAKE_CXX_VISIBILITY_PRESET hidden)
 
+if(CMAKE_HOST_SYSTEM_NAME STREQUAL "Linux")
+    message(STATUS "Building on linux, disabling SSE and using builtin offsetof")
+    add_definitions(-D_CRT_USE_BUILTIN_OFFSETOF -DIMGUI_DISABLE_SSE)
+endif()
+
 if (DEFINED ENV{GITHUB_ACTIONS})
     message("Github Actions Build")
     add_definitions(-DGITHUB_ACTIONS)
