@@ -63,9 +63,12 @@ namespace summit::ui::imgui::tabbed {
             ImGui::SetCursorPos(ImVec2(ImGui::GetWindowWidth() / 2 - ImGui::CalcTextSize(tab.c_str()).x / 2, 4 * summit::ui::getUIScale()));
             ImGui::Text("%s", tab.c_str());
             ImGui::SetCursorPos(ImVec2(8, 33 * summit::ui::getUIScale()));
-            for (auto mod : summit::mods::getModsInTab(tab)) {
-                mod.second->renderImGui();
-            }
+            // for (auto mod : summit::mods::getModsInTab(tab)) {
+            //     mod.second->renderImGui();
+            // }
+            // for (auto widget : summit::ui::getWidgets(tab)) {
+            //   widget.second->imRender();
+            // }
             ImGui::End();
         }
         firstDraw = false;

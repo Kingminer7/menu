@@ -28,5 +28,5 @@ namespace summit::ui {
     std::unordered_map<std::string, widgets::Widget*> getWidgets();
     std::unordered_map<std::string, widgets::Widget*> getWidgets(std::string tab);
 
-    #define REGISTER_STYLE(style) $execute{ registerStyle(new style()); }
+    #define REGISTER_STYLE(style) $on_mod(Loaded){ registerStyle(new style()); }
 }

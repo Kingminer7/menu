@@ -1,8 +1,14 @@
 #include <imgui-cocos.hpp>
 #include "../../Summit.hpp"
 #include "SafeMode.hpp"
+#include "../../ui/widgets/Widget.hpp"
+#include "../../ui/UIManager.hpp"
 
 void SafeModeMod::init() {
+    auto widget = summit::ui::widgets::Widget::create("global.safemode")->addToggle("test", [this](bool toggled) {
+        geode::log::info("Toggled");
+    }, summit::Config::getValue<bool>("global.safemode.enabled", true))->setLabel("Safe Mode")->setDescription("Prevents completion of levels to prevent cheated completions.");
+    summit::ui::registerWidget(widget);
     summit::Config::setValueIfUnset<bool>("global.safemode.enabled", true);
     toggled = summit::Config::getValue<bool>("global.safemode.enabled", true);
     lastToggled = toggled;

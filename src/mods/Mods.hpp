@@ -17,6 +17,6 @@ namespace summit::mods {
     std::vector<std::string> getTabs();
     std::unordered_map<std::string, Mod*> getModsInTab(std::string tab);
 
-    #define REGISTER_MOD(mod) $execute{ summit::mods::registerMod(mod); }
-    #define REGISTER_TAB(tab) $execute{ summit::mods::registerTab(tab); }
+    #define REGISTER_MOD(mod) $on_mod(Loaded){ summit::mods::registerMod(mod); }
+    #define REGISTER_TAB(tab) $on_mod(Loaded){ summit::mods::registerTab(tab); }
 }

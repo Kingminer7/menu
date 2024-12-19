@@ -1,3 +1,5 @@
+#pragma once
+
 namespace summit::ui::widgets {
 
   struct Component {
@@ -9,6 +11,13 @@ namespace summit::ui::widgets {
   };
   struct Button : Component {
     std::function<void()> callback;
+  };
+  struct Input : Component {
+    std::string value;
+    // text, integer, float. anything else is custom and will be the limiting chars
+    std::string type = "text";
+    int maxChars = 0;
+    std::function<void(std::string value)> callback;
   };
 
   class Widget {
@@ -27,6 +36,8 @@ namespace summit::ui::widgets {
       Widget *addToggle(std::string id, std::function<void(bool toggled)> callback, bool default_);
       // @brief Adds a button to the widget
       Widget *addButton(std::string id, std::function<void()> callback);
+      // @brief Adds an input to the widget
+      Widget *addInput(std::string id, std::function<void(std::string value)> callback, std::string type, int maxChars, std::string default_);
 
       // @brief Removes a component from the widget.
       Widget *remove(std::string id);
@@ -42,33 +53,23 @@ namespace summit::ui::widgets {
       Widget *unregisterOption();
 
       // @brief Get the ID of the widget
-      std::string getId() {
-        return m_id;
-      }
+      std::string getId();
 
       // @brief Get the label of the widget
-      std::string getLabel() {
-        return m_label;
-      }
-
+      std::string getLabel();
       // @brief Get the description of the widget
-      std::string getDescription() {
-        return m_description;
-      }
-
+      std::string getDescription();
       // @brief Get the tab of the widget
-      std::string getTab() {
-        return m_tab;
-      }
-
+      std::string getTab();
       // @brief Get the components of the widget
-      std::vector<Component*> getComponents() {
-        return m_components;
-      }
+      std::vector<Component*> getComponents();
+      // @brief Get a component by ID
+      Component *getComponent(std::string id);
+
+      void imRender();
+      cocos2d::CCNode *createCocosNode();
 
       // @brief Create a new widget
-      static Widget *create(std::string id) {
-        return new Widget(id);
-      }
+      static Widget *create(std::string id);
   };
 }
