@@ -51,11 +51,6 @@ namespace summit::ui::widgets
     return this;
   }
 
-  Widget *Widget::setTab(std::string tab) {
-    m_tab = tab;
-    return this;
-  }
-
   Widget *Widget::registerOption(std::string tab)
   {
     return this;
@@ -104,7 +99,7 @@ namespace summit::ui::widgets
   }
 
   void Widget::imRender() {
-    ImGui::Text(m_label.c_str());
+    ImGui::Text("%s", m_label.c_str());
     if (!m_description.empty())
     {
       if (ImGui::IsItemHovered())
@@ -115,7 +110,8 @@ namespace summit::ui::widgets
       }
     }
     for (auto it = m_components.begin(); it != m_components.end(); it++) {
-      if (Toggle *t = static_cast<Toggle*>(*it)) {
+      if ((*it)->getType() == "Toggle") {
+        Toggle *t = static_cast<Toggle*>(*it);
         geode::log::info("Toggle: {}", t->id);
         ImGui::Checkbox(fmt::format("##{}", t->id).c_str(), &t->toggled);
         if (!m_description.empty())
@@ -127,7 +123,8 @@ namespace summit::ui::widgets
             ImGui::EndTooltip();
           }
         }
-      } else if (Button *b = static_cast<Button*>(*it)) {
+      } else if ((*it)->getType() == "Button") {
+        Button *b = static_cast<Button*>(*it);
         geode::log::info("Button: {}", b->id);
         if (ImGui::Button(b->id.c_str())) {
           geode::log::info("Button pressed");
@@ -146,7 +143,7 @@ namespace summit::ui::widgets
       // } else if (Input *i = static_cast<Input*>(*it)) {
       //   ImGui::InputFloat(i->id.c_str(), &i->value);
       } else {
-        geode::log::warn("Component {} in {} has an unrecognized component type!", (*it)->id, m_id);
+        geode::log::warn("Component {} in {} has an unrecognized component type: {}!", (*it)->id, m_id, (*it)->getType());
       }
     }
   }

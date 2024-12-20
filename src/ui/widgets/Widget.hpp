@@ -3,53 +3,54 @@
 namespace summit::ui::widgets {
 
   struct Component {
+    std::string id;
     std::string getType() {
       return "Component";
     }
-    std::string id;
   };
   struct Toggle : Component {
+    bool toggled = false;
+    std::function<void(bool toggled)> callback;
     std::string getType() {
       return "Toggle";
     }
-    bool toggled = false;
-    std::function<void(bool toggled)> callback;
   };
   struct Button : Component {
+    // std::string id;
+    std::function<void()> callback;
     std::string getType() {
       return "Button";
     }
-    std::function<void()> callback;
   };
   struct StringInput : Component {
-    std::string getType() {
-      return "StringInput";
-    }
     int maxChars = 0;
     std::string value = "";
     std::function<void(std::string value)> callback;
+    std::string getType() {
+      return "StringInput";
+    }
   };
   struct IntInput : Component {
-    std::string getType() {
-      return "IntInput";
-    }
     // @brief input, slider, or step
     std::string type = "input";
     int value = 0;
     int min = INT_MIN;
     int max = INT_MAX;
     std::function<void(int value)> callback;
+    std::string getType() {
+      return "IntInput";
+    }
   };
   struct FloatInput : Component {
-    std::string getType() {
-      return "FloatInput";
-    }
     // @brief input, slider, or step
     std::string type = "input";
     float value = 0;
     float min = FLT_MIN;
     float max = FLT_MAX;
     std::function<void(float value)> callback;
+    std::string getType() {
+      return "FloatInput";
+    }
   };
 
   class Widget {
