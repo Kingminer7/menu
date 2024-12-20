@@ -110,7 +110,7 @@ namespace summit::ui::widgets
       if (ImGui::IsItemHovered())
       {
         ImGui::BeginTooltip();
-        ImGui::Text(m_description.c_str());
+        ImGui::Text("%s", m_description.c_str());
         ImGui::EndTooltip();
       }
     }
@@ -123,7 +123,7 @@ namespace summit::ui::widgets
           if (ImGui::IsItemHovered())
           {
             ImGui::BeginTooltip();
-            ImGui::Text(m_description.c_str());
+            ImGui::Text("%s", m_description.c_str());
             ImGui::EndTooltip();
           }
         }
@@ -139,7 +139,7 @@ namespace summit::ui::widgets
           if (ImGui::IsItemHovered())
           {
             ImGui::BeginTooltip();
-            ImGui::Text(m_description.c_str());
+            ImGui::Text("%s", m_description.c_str());
             ImGui::EndTooltip();
           }
         }
