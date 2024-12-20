@@ -12,10 +12,10 @@ namespace summit::ui::widgets {
     return this;
   }
 
-  Widget *Widget::addInput(std::string id, std::function<void(std::string value)> callback, std::string type, int maxChars, std::string default_) {
-    m_components.push_back(new Input{id, default_, type, maxChars, callback});
-    return this;
-  }
+  // Widget *Widget::addInput(std::string id, std::function<void(std::string value)> callback, std::string type, int maxChars, float default_) {
+  //   m_components.push_back(new Input{id, default_, type, maxChars, callback});
+  //   return this;
+  // }
 
   Widget *Widget::remove(std::string id) {
     for (auto it = m_components.begin(); it != m_components.end(); it++) {
@@ -35,6 +35,11 @@ namespace summit::ui::widgets {
 
   Widget *Widget::setDescription(std::string desc) {
     m_description = desc;
+    return this;
+  }
+
+  Widget *Widget::setTab(std::string tab) {
+    m_tab = tab;
     return this;
   }
 
@@ -79,8 +84,18 @@ namespace summit::ui::widgets {
   void Widget::imRender() {
     for (auto it = m_components.begin(); it != m_components.end(); it++) {
       if (Toggle *t = static_cast<Toggle*>(*it)) {
-        ImGui::Checkbox(t->id.c_str(), &t->toggled);
-         
+        geode::log::info("Toggle: {}", t->id);
+        ImGui::Checkbox(fmt::format("##{}", t->id).c_str(), &t->toggled);
+      } else if (Button *b = static_cast<Button*>(*it)) {
+        geode::log::info("Button: {}", b->id);
+        if (ImGui::Button(b->id.c_str())) {
+          geode::log::info("Button pressed");
+          b->callback();
+        }
+      // } else if (Input *i = static_cast<Input*>(*it)) {
+      //   ImGui::InputFloat(i->id.c_str(), &i->value);
+      } else {
+        geode::log::warn("Component {} in {} has an unrecognized component type!", (*it)->id, m_id);
       }
     }
   }

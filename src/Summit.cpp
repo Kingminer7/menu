@@ -11,7 +11,8 @@ namespace summit {
     void Config::initialize() {
         if (!initialized && !initializing) {
             initializing = true;
-            config = matjson::parse(geode::Mod::get()->getSavedValue<std::string>("config")).unwrapOrDefault();
+            config = geode::Mod::get()->getSavedValue<matjson::Value>("config");
+            // config = matjson::parse(geode::Mod::get()->getSavedValue<std::string>("config")).unwrapOrDefault();
             temp = matjson::Value::object();
             initialized = true;
         } else {

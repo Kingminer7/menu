@@ -47,9 +47,7 @@ namespace summit::ui {
     std::unordered_map<std::string, widgets::Widget*> widgetMap = {};
     
     void registerWidget(widgets::Widget *widget) {
-        geode::log::info("Registering widget {}.", widget->getId());
         widgetMap[widget->getId()] = widget;
-        geode::log::info("Registered widget {}.", widget->getId());
     }
 
     void unregisterWidget(widgets::Widget *widget) {
@@ -62,15 +60,11 @@ namespace summit::ui {
 
     std::unordered_map<std::string, widgets::Widget*> getWidgets(std::string tab) {
         std::unordered_map<std::string, widgets::Widget*> tabWidgets;
-        geode::log::info("Getting widgets.");
         for (auto& [id, widget] : widgetMap) {
-          geode::log::info("Checking widget {}.", id);
             if (widget->getTab() == tab) {
-              geode::log::info("Widget {} is in tab {}.", id, tab);
                 tabWidgets[id] = widget;
             }
         }
-        geode::log::info("Returning widgets.");
         return tabWidgets;
     }
 }

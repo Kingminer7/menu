@@ -3,21 +3,53 @@
 namespace summit::ui::widgets {
 
   struct Component {
+    std::string getType() {
+      return "Component";
+    }
     std::string id;
   };
   struct Toggle : Component {
+    std::string getType() {
+      return "Toggle";
+    }
     bool toggled = false;
     std::function<void(bool toggled)> callback;
   };
   struct Button : Component {
+    std::string getType() {
+      return "Button";
+    }
     std::function<void()> callback;
   };
-  struct Input : Component {
-    std::string value;
-    // text, integer, float. anything else is custom and will be the limiting chars
-    std::string type = "text";
+  struct StringInput : Component {
+    std::string getType() {
+      return "StringInput";
+    }
     int maxChars = 0;
+    std::string value = "";
     std::function<void(std::string value)> callback;
+  };
+  struct IntInput : Component {
+    std::string getType() {
+      return "IntInput";
+    }
+    // @brief input, slider, or step
+    std::string type = "input";
+    int value = 0;
+    int min = INT_MIN;
+    int max = INT_MAX;
+    std::function<void(int value)> callback;
+  };
+  struct FloatInput : Component {
+    std::string getType() {
+      return "FloatInput";
+    }
+    // @brief input, slider, or step
+    std::string type = "input";
+    float value = 0;
+    float min = FLT_MIN;
+    float max = FLT_MAX;
+    std::function<void(float value)> callback;
   };
 
   class Widget {
@@ -36,8 +68,12 @@ namespace summit::ui::widgets {
       Widget *addToggle(std::string id, std::function<void(bool toggled)> callback, bool default_);
       // @brief Adds a button to the widget
       Widget *addButton(std::string id, std::function<void()> callback);
-      // @brief Adds an input to the widget
-      Widget *addInput(std::string id, std::function<void(std::string value)> callback, std::string type, int maxChars, std::string default_);
+      // @brief Adds a string input to the widget
+      Widget *addStringInput(std::string id, std::function<void(std::string value)> callback, int maxChars, std::string default_);
+      // @brief Adds an integer input to the widget
+      Widget *addIntInput(std::string id, std::function<void(int value)> callback, std::string type, int min, int max, int default_);
+      // @brief Adds a float input to the widget
+      Widget *addFloatInput(std::string id, std::function<void(float value)> callback, std::string type, float min, float max, float default_);
 
       // @brief Removes a component from the widget.
       Widget *remove(std::string id);
@@ -46,6 +82,8 @@ namespace summit::ui::widgets {
       Widget *setLabel(std::string label);
       // @brief Sets the description of the widget
       Widget *setDescription(std::string desc);
+      // @brief Sets the tab of the widget
+      Widget *setTab(std::string tab);
       
       // @brief Register this option to a tab in the UI
       Widget *registerOption(std::string tab);

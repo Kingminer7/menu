@@ -66,9 +66,9 @@ namespace summit::ui::imgui::tabbed {
             // for (auto mod : summit::mods::getModsInTab(tab)) {
             //     mod.second->renderImGui();
             // }
-            // for (auto widget : summit::ui::getWidgets(tab)) {
-            //   widget.second->imRender();
-            // }
+            for (auto widget : summit::ui::getWidgets(tab)) {
+              widget.second->imRender();
+            }
             ImGui::End();
         }
         firstDraw = false;
