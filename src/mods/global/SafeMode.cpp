@@ -1,40 +1,22 @@
 #include <imgui-cocos.hpp>
 #include "../../Summit.hpp"
 #include "SafeMode.hpp"
-#include "../../ui/widgets/Widget.hpp"
-#include "../../ui/UIManager.hpp"
 
 void SafeModeMod::init() {
+    summit::Config::setValueIfUnset<bool>("global.safemode.enabled", true);
+    toggled = summit::Config::getValue<bool>("global.safemode.enabled", true);
     auto widget = summit::ui::widgets::Widget::create("global.safemode")
-        ->addToggle("global.safemodetoggle", [this](bool toggled) {
-            geode::log::info("Toggled");
-        }, summit::Config::getValue<bool>("global.safemode.enabled", true))
-        ->addButton("Test Button", []() {
-            geode::log::info("Button pressed");
-        })
+        ->addToggle("global.safemode.toggle", [this](bool toggled) {
+            onToggle(toggled);
+        }, &toggled)
         ->setLabel("Safe Mode")
         ->setDescription("Prevents completion of levels to prevent cheated completions.")
         ->setTab("Global");
     summit::ui::registerWidget(widget);
-    summit::Config::setValueIfUnset<bool>("global.safemode.enabled", true);
-    toggled = summit::Config::getValue<bool>("global.safemode.enabled", true);
-    lastToggled = toggled;
 }
 
 void SafeModeMod::update(float dt) {
     
-}
-
-void SafeModeMod::renderImGui() {
-    ImGui::Checkbox("Safe Mode", &toggled);
-    if (ImGui::IsItemHovered(ImGuiHoveredFlags_DelayShort))
-    {
-        ImGui::SetTooltip("Prevents completion of levels to prevent cheated completions.");
-    }
-    if (lastToggled != toggled) {
-        lastToggled = toggled;
-        onToggle(toggled);
-    }
 }
 
 std::string SafeModeMod::getId() const {
@@ -47,6 +29,7 @@ std::string SafeModeMod::getTab() const {
 
 void SafeModeMod::onToggle(bool toggled) {
     summit::Config::setValue<bool>("global.safemode.enabled", toggled);
+    geode::log::info("Safe Mode toggled: {}", toggled);
 }
 
 #include <Geode/modify/PlayLayer.hpp>

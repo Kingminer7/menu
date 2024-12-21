@@ -5,24 +5,18 @@
 void IconHackMod::init() {
     summit::Config::setValueIfUnset<bool>("bypass.iconhack.enabled", false);
     toggled = summit::Config::getValue<bool>("bypass.iconhack.enabled", false);
-    lastToggled = toggled;
+    auto widget = summit::ui::widgets::Widget::create("bypass.iconhack")
+        ->addToggle("bypass.iconhack.toggle", [this](bool toggled) {
+            onToggle(toggled);
+        }, &toggled)
+        ->setLabel("Icon Hack")
+        ->setDescription("Lets you use icons you haven't unlocked")
+        ->setTab("Bypass");
+    summit::ui::registerWidget(widget);
 }
 
 void IconHackMod::update(float dt) {
     
-}
-
-void IconHackMod::renderImGui() {
-    ImGui::Checkbox("Icon Hack", &toggled);
-    if (ImGui::IsItemHovered(ImGuiHoveredFlags_DelayShort))
-    {
-        ImGui::SetNextWindowSize(ImVec2(80.f, 30.f), ImGuiCond_FirstUseEver);
-        ImGui::SetTooltip("Lets you use any icon");
-    }
-    if (lastToggled != toggled) {
-        lastToggled = toggled;
-        onToggle(toggled);
-    }
 }
 
 std::string IconHackMod::getId() const {

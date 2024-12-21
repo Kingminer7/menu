@@ -7,9 +7,10 @@ namespace summit::ui::widgets {
     std::string type;
   };
   struct Toggle : Component {
-    bool toggled = false;
+    bool *toggled;
     std::function<void(bool toggled)> callback;
     std::string type = "Toggle";
+    bool lastToggled = false;
   };
   struct Button : Component {
     // std::string id;
@@ -21,6 +22,7 @@ namespace summit::ui::widgets {
     std::string value = "";
     std::function<void(std::string value)> callback;
     std::string type = "StringInput";
+    std::string lastValue = "";
   };
   struct IntInput : Component {
     // @brief input, slider, or step
@@ -30,15 +32,17 @@ namespace summit::ui::widgets {
     int max = INT_MAX;
     std::function<void(int value)> callback;
     std::string type = "IntInput";
+    int lastValue = 0;
   };
   struct FloatInput : Component {
     // @brief input, slider, or step
-    std::string inputType = "input";
     float value = 0;
+    std::function<void(float value)> callback;
     float min = FLT_MIN;
     float max = FLT_MAX;
-    std::function<void(float value)> callback;
+    std::string inputType = "input";
     std::string type = "FloatInput";
+    float lastValue = 0;
   };
 
   class Widget {
@@ -54,7 +58,7 @@ namespace summit::ui::widgets {
     public:
       // these all return the widget so you can call things like myWidget->addThing()->setThat() etc
       // @brief Adds a toggle to the widget
-      Widget *addToggle(std::string id, std::function<void(bool toggled)> callback, bool default_);
+      Widget *addToggle(std::string id, std::function<void(bool toggled)> callback, bool *toggleVal);
       // @brief Adds a button to the widget
       Widget *addButton(std::string id, std::function<void()> callback);
       // @brief Adds a string input to the widget
@@ -62,7 +66,7 @@ namespace summit::ui::widgets {
       // @brief Adds an integer input to the widget
       Widget *addIntInput(std::string id, std::function<void(int value)> callback, std::string type, int min, int max, int default_);
       // @brief Adds a float input to the widget
-      Widget *addFloatInput(std::string id, std::function<void(float value)> callback, std::string type, float min, float max, float default_);
+      Widget *addFloatInput(std::string id, std::function<void(float value)> callback, std::string type, float default_, float min = FLT_MIN, float max = FLT_MAX);
 
       // @brief Removes a component from the widget.
       Widget *remove(std::string id);

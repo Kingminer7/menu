@@ -5,36 +5,30 @@
 void TextBypassMod::init() {
     summit::Config::setValueIfUnset<bool>("bypass.textlengthbypass.enabled", false);
     lengthBypass = summit::Config::getValue<bool>("bypass.textlengthbypass.enabled", false);
-    lastLengthBypass = lengthBypass;
     summit::Config::setValueIfUnset<bool>("bypass.textcharbypass.enabled", false);
     charBypass = summit::Config::getValue<bool>("bypass.textcharbypass.enabled", false);
-    lastCharBypass = charBypass;
+
+    auto widget = summit::ui::widgets::Widget::create("bypass.textbypass")
+        ->addToggle("bypass.textbypass.length", [this](bool toggled) {
+            onLengthBypass(toggled);
+        }, &lengthBypass)
+        ->setLabel("Text Length Bypass")
+        ->setDescription("Removes the limit from text boxes")
+        ->setTab("Bypass");
+    summit::ui::registerWidget(widget);
+
+    auto widget2 = summit::ui::widgets::Widget::create("bypass.textbypass")
+        ->addToggle("bypass.textbypass.char", [this](bool toggled) {
+            onCharBypass(toggled);
+        }, &charBypass)
+        ->setLabel("Character Filter Bypass")
+        ->setDescription("Removes the character filter from text boxes")
+        ->setTab("Bypass");
+    summit::ui::registerWidget(widget2);
 }
 
 void TextBypassMod::update(float dt) {
     
-}
-
-void TextBypassMod::renderImGui() {
-    ImGui::Checkbox("Text Length Bypass", &lengthBypass);
-    if (ImGui::IsItemHovered(ImGuiHoveredFlags_DelayShort))
-    {
-        ImGui::SetTooltip("Removes the limit from text boxes");
-    }
-    if (lastLengthBypass != lengthBypass) {
-        lastLengthBypass = lengthBypass;
-        onLengthBypass(lengthBypass);
-    }
-
-    ImGui::Checkbox("Character Filter Bypass", &charBypass);
-    if (ImGui::IsItemHovered(ImGuiHoveredFlags_DelayShort))
-    {
-        ImGui::SetTooltip("Allows Removes the character filter from text boxes");
-    }
-    if (lastCharBypass != charBypass) {
-        lastCharBypass = charBypass;
-        onCharBypass(charBypass);
-    }
 }
 
 std::string TextBypassMod::getId() const {

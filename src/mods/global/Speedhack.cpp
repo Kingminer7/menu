@@ -5,37 +5,23 @@
 void SpeedhackMod::init() {
     summit::Config::setValueIfUnset<bool>("global.speedhack.enabled", false, false);
     toggled = summit::Config::getValue<bool>("global.speedhack.enabled", false, false);
-    lastToggled = toggled;
     summit::Config::setValueIfUnset<float>("global.speedhack.value", 1.f);
     value = summit::Config::getValue<float>("global.speedhack.value", 1.f);
-    lastValue = value;
+
+    auto widget = summit::ui::widgets::Widget::create("global.speedhack")
+        ->addToggle("global.speedhack.toggle", [this](bool toggled) {
+            onToggle(toggled);
+        }, &toggled)
+        ->addFloatInput("global.speedhack.value", [this](float value) {
+            onValueChange(value);
+        }, "input", value, 0.1f, 1000.0f)
+        ->setLabel("Speedhack")
+        ->setDescription("Speeds up the game speed.")
+        ->setTab("Global");
+    summit::ui::registerWidget(widget);
 }
 
 void SpeedhackMod::update(float dt) {
-    
-}
-
-void SpeedhackMod::renderImGui() {
-    ImGui::Checkbox("Speedhack", &toggled);
-    if (ImGui::IsItemHovered(ImGuiHoveredFlags_DelayShort))
-    {
-        ImGui::SetTooltip("Speeds up the game speed.");
-    }
-    if (lastToggled != toggled) {
-        lastToggled = toggled;
-        onToggle(toggled);
-    }
-    ImGui::SameLine();
-    ImGui::SetNextItemWidth(70);
-    ImGui::DragFloat("##SpeedhackInput", &value, 0.1f, 0.1f, 1000.0f);
-    if (ImGui::IsItemHovered(ImGuiHoveredFlags_DelayShort))
-    {
-        ImGui::SetTooltip("Speeds up the game speed.");
-    }
-    if (lastValue != value) {
-        lastValue = value;
-        onValueChange(value);
-    }
     
 }
 
@@ -67,7 +53,15 @@ class $modify(cocos2d::CCScheduler) {
 void SpeedAudioMod::init() {
     summit::Config::setValueIfUnset<bool>("global.speedhack.audio.enabled", false);
     speedAudio = summit::Config::getValue<bool>("global.speedhack.audio.enabled", false);
-    lastSpeedAudio = speedAudio;
+
+    auto widget = summit::ui::widgets::Widget::create("global.speedhack.audio")
+        ->addToggle("global.speedhack.audio.toggle", [this](bool toggled) {
+            onToggleSpeed(toggled);
+        }, &speedAudio)
+        ->setLabel("Speedhack Audio Sync")
+        ->setDescription("Speeds up audio to match speedhack.")
+        ->setTab("Global");
+    summit::ui::registerWidget(widget);
 }
 
 void SpeedAudioMod::update(float dt) {
@@ -82,18 +76,6 @@ void SpeedAudioMod::update(float dt) {
             if (speedAudio && summit::Config::getValue<bool>("global.speedhack.enabled", false, false)) channel->setFrequency(freq * summit::Config::getValue<float>("global.speedhack.value", 1.0));
             else channel->setFrequency(freq);
         }
-    }
-}
-
-void SpeedAudioMod::renderImGui() {
-    ImGui::Checkbox("Speedhack Audio Sync", &speedAudio);
-    if (ImGui::IsItemHovered(ImGuiHoveredFlags_DelayShort))
-    {
-        ImGui::SetTooltip("Speeds up audio to match speedhack.");
-    }
-    if (lastSpeedAudio != speedAudio) {
-        lastSpeedAudio = speedAudio;
-        onToggleSpeed(speedAudio);
     }
 }
 

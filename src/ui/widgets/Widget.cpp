@@ -3,22 +3,23 @@
 
 namespace summit::ui::widgets
 {
-  Widget *Widget::addToggle(std::string id, std::function<void(bool toggled)> callback, bool default_)
+  Widget *Widget::addToggle(std::string id, std::function<void(bool toggled)> callback, bool *toggleVal)
   {
-    m_components.push_back(new Toggle{id, default_, callback});
+    m_components.push_back(new Toggle{id, "Toggle", toggleVal, callback});
     return this;
   }
 
   Widget *Widget::addButton(std::string id, std::function<void()> callback)
   {
-    m_components.push_back(new Button{id, callback});
+    m_components.push_back(new Button{id, "Button", callback});
     return this;
   }
 
-  // Widget *Widget::addInput(std::string id, std::function<void(std::string value)> callback, std::string type, int maxChars, float default_) {
-  //   m_components.push_back(new Input{id, default_, type, maxChars, callback});
-  //   return this;
-  // }
+  Widget *Widget::addFloatInput(std::string id, std::function<void(float value)> callback, std::string inputType, float value, float min, float max)
+  {
+    m_components.push_back(new FloatInput{id, "FloatInput", value, callback, min, max, inputType});
+    return this;
+  }
 
   Widget *Widget::remove(std::string id)
   {
@@ -99,21 +100,17 @@ namespace summit::ui::widgets
   }
 
   void Widget::imRender() {
-    ImGui::Text("%s", m_label.c_str());
-    if (!m_description.empty())
-    {
-      if (ImGui::IsItemHovered())
-      {
-        ImGui::BeginTooltip();
-        ImGui::Text("%s", m_description.c_str());
-        ImGui::EndTooltip();
-      }
-    }
+    int i = 0;
     for (auto it = m_components.begin(); it != m_components.end(); it++) {
+      if (i > 0) ImGui::SameLine();
+      i++;
       if ((*it)->type == "Toggle") {
         Toggle *t = static_cast<Toggle*>(*it);
-        geode::log::info("Toggle: {}", t->id);
-        ImGui::Checkbox(fmt::format("##{}", t->id).c_str(), &t->toggled);
+        ImGui::Checkbox(fmt::format("##{}", t->id).c_str(), t->toggled);
+        if (*t->toggled != t->lastToggled) {
+          t->lastToggled = *t->toggled;
+          t->callback(*t->toggled);
+        }
         if (!m_description.empty())
         {
           if (ImGui::IsItemHovered())
@@ -125,9 +122,7 @@ namespace summit::ui::widgets
         }
       } else if ((*it)->type == "Button") {
         Button *b = static_cast<Button*>(*it);
-        geode::log::info("Button: {}", b->id);
         if (ImGui::Button(b->id.c_str())) {
-          geode::log::info("Button pressed");
           b->callback();
         }
         
@@ -140,10 +135,44 @@ namespace summit::ui::widgets
             ImGui::EndTooltip();
           }
         }
-      // } else if (Input *i = static_cast<Input*>(*it)) {
-      //   ImGui::InputFloat(i->id.c_str(), &i->value);
+      } else if ((*it)->type == "FloatInput") {
+        FloatInput *f = static_cast<FloatInput*>(*it);
+        if (f->inputType == "input") {
+          ImGui::InputFloat(fmt::format("##{}", f->id).c_str(), &f->value);
+        } else if (f->inputType == "slider") {
+          ImGui::SliderFloat(fmt::format("##{}", f->id).c_str(), &f->value, f->min, f->max);
+        } else if (f->inputType == "step") {
+          ImGui::DragFloat(fmt::format("##{}", f->id).c_str(), &f->value, 0.1f, f->min, f->max);
+        }
+        if (f->value != f->value) {
+          f->value = f->value;
+          f->callback(f->value);
+        }
+        if (!m_description.empty())
+        {
+          if (ImGui::IsItemHovered())
+          {
+            ImGui::BeginTooltip();
+            ImGui::Text("%s", m_description.c_str());
+            ImGui::EndTooltip();
+          }
+        }
       } else {
-        geode::log::warn("Component {} in {} has an unrecognized component type: {}!", (*it)->id, m_id, (*it)->getType());
+        geode::log::warn("Component {} in {} has an unrecognized component type: {}!", (*it)->id, m_id, (*it)->type);
+      }
+    }
+    if (!m_label.empty())
+    {
+      if (i > 0) ImGui::SameLine();
+      ImGui::Text("%s", m_label.c_str());
+    }
+    if (!m_description.empty())
+    {
+      if (ImGui::IsItemHovered())
+      {
+        ImGui::BeginTooltip();
+        ImGui::Text("%s", m_description.c_str());
+        ImGui::EndTooltip();
       }
     }
   }

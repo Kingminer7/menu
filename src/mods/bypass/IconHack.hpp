@@ -5,11 +5,9 @@
 class IconHackMod : public summit::mods::Mod {
     private:
         bool toggled = false;
-        bool lastToggled = false;
     public:
         void init() override;
         void update(float dt) override;
-        void renderImGui() override;
         std::string getId() const override;
         std::string getTab() const override;
         void onToggle(bool toggled);

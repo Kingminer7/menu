@@ -7,95 +7,43 @@
 void ConfigMods::init() {
     summit::Config::setValueIfUnset<bool>("config.showball", false);
     showBall = summit::Config::getValue<bool>("config.showball", false);
-    lastShowBall = showBall;
 
     summit::Config::setValueIfUnset<float>("config.uiscale", 1.f);
     uiScale = summit::Config::getValue<float>("config.uiscale", 1.f);
-    lastUiScale = uiScale;
     summit::ui::setUIScale(uiScale);
 
     summit::Config::setValueIfUnset<std::string>("config.font", "Carme");
     summit::Config::setValueIfUnset<std::string>("config.fontstyle", "Regular");
     currentFont = summit::Config::getValue<std::string>("config.font", "Carme");
     currentFontStyle = summit::Config::getValue<std::string>("config.fontstyle", "Regular");
-    lastFont = currentFont;
-    lastFontStyle = currentFontStyle;
     geode::queueInMainThread([this]() {
         summit::ui::imgui::setFont(currentFont, currentFontStyle);
     });
+
+    #ifndef GEODE_IS_ANDROID
+    auto widget = summit::ui::widgets::Widget::create("config.showball")
+        ->addToggle("config.showball.toggle", [this](bool toggled) {
+            onShowBall(toggled);
+        }, &showBall)
+        ->setLabel("Show Ball")
+        ->setDescription("Show the ball to open the menu.")
+        ->setTab("Config");
+    summit::ui::registerWidget(widget);
+    #endif
+
+    auto widget2 = summit::ui::widgets::Widget::create("config.uiscale")
+        ->addFloatInput("config.uiscale.input", [this](float value) {
+            onUiScale(value);
+        }, "input", uiScale, 0.1f, 2.f)
+        ->setLabel("UI Scale")
+        ->setDescription("Change the scale of the UI.")
+        ->setTab("Config");
+    summit::ui::registerWidget(widget2);
+    
 }
 
 void ConfigMods::update(float dt) {
     
-}
-
-void ConfigMods::renderImGui() {
-    #ifndef GEODE_IS_ANDROID
-    ImGui::Checkbox("Show Ball", &showBall);
-    if (ImGui::IsItemHovered(ImGuiHoveredFlags_DelayShort))
-    {
-        ImGui::SetTooltip("Show the ball to open the menu.");
-    }
-    if (showBall != lastShowBall) {
-        onShowBall(showBall);
-        lastShowBall = showBall;
-    }
-    #endif
-
-    ImGui::SetNextItemWidth(100);
-    ImGui::InputFloat("UI Scale", &uiScale);
-    if (ImGui::IsItemHovered(ImGuiHoveredFlags_DelayShort))
-    {
-        ImGui::SetTooltip("Change the scale of the UI.");
-    }
-    if (uiScale != lastUiScale) {
-        onUiScale(uiScale);
-        lastUiScale = uiScale;
-    }
-
-    ImGui::SetNextItemWidth(125);
-    if (ImGui::BeginCombo("Font", currentFont.c_str())) {
-        for (auto font : summit::ui::imgui::getFonts()) {
-            bool isSelected = (currentFont == font);
-            summit::ui::imgui::pushFont(font, "Regular");
-            if (ImGui::Selectable(font.c_str(), isSelected)) {
-                currentFont = font;
-                summit::Config::setValue<std::string>("config.font", font);
-                summit::ui::imgui::setFont(currentFont, currentFontStyle);
-            }
-            if (isSelected) {
-                ImGui::SetItemDefaultFocus();
-            }
-            summit::ui::imgui::popFont();
-        }
-        ImGui::EndCombo();
-    }
-    if (ImGui::IsItemHovered(ImGuiHoveredFlags_DelayShort))
-    {
-        ImGui::SetTooltip("Change the font used in the UI.");
-    }
-
-    ImGui::SetNextItemWidth(125);
-    if (ImGui::BeginCombo("Font Style", currentFontStyle.c_str())) {
-        for (auto style : summit::ui::imgui::getFontStyles(currentFont)) {
-            bool isSelected = (currentFontStyle == style);
-            summit::ui::imgui::pushFont(currentFont, style);
-            if (ImGui::Selectable(style.c_str(), isSelected)) {
-                currentFontStyle = style;
-                summit::Config::setValue<std::string>("config.fontstyle", style);
-                summit::ui::imgui::setFont(currentFont, currentFontStyle);
-            }
-            if (isSelected) {
-                ImGui::SetItemDefaultFocus();
-            }
-            summit::ui::imgui::popFont();
-        }
-        ImGui::EndCombo();
-    }
-    if (ImGui::IsItemHovered(ImGuiHoveredFlags_DelayShort))
-    {
-        ImGui::SetTooltip("Change the style of the font used in the UI.");
-    }
 }
 
 std::string ConfigMods::getId() const {

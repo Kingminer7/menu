@@ -5,23 +5,18 @@
 void MainLevelsMod::init() {
     summit::Config::setValueIfUnset<bool>("bypass.mainlevelbypass.enabled", false);
     toggled = summit::Config::getValue<bool>("bypass.mainlevelbypass.enabled", false);
-    lastToggled = toggled;
+    auto widget = summit::ui::widgets::Widget::create("bypass.mainlevels")
+        ->addToggle("bypass.mainlevels.toggle", [this](bool toggled) {
+            onToggle(toggled);
+        }, &toggled)
+        ->setLabel("Main Level Bypass")
+        ->setDescription("Lets you play locked main levels")
+        ->setTab("Bypass");
+    summit::ui::registerWidget(widget);
 }
 
 void MainLevelsMod::update(float dt) {
     
-}
-
-void MainLevelsMod::renderImGui() {
-    ImGui::Checkbox("Main Level Bypass", &toggled);
-    if (ImGui::IsItemHovered(ImGuiHoveredFlags_DelayShort))
-    {
-        ImGui::SetTooltip("Lets you play locked main levels");
-    }
-    if (lastToggled != toggled) {
-        lastToggled = toggled;
-        onToggle(toggled);
-    }
 }
 
 std::string MainLevelsMod::getId() const {

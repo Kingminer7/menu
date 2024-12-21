@@ -1,11 +1,11 @@
 #pragma once
+#include "../ui/UIManager.hpp"
 
 namespace summit::mods {
     class Mod {
         public:
             virtual void init() = 0;
             virtual void update(float dt) = 0;
-            virtual void renderImGui() = 0;
             virtual std::string getId() const = 0;
             virtual std::string getTab() const = 0;
     };
