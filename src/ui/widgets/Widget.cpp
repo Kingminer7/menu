@@ -138,10 +138,13 @@ namespace summit::ui::widgets
       } else if ((*it)->type == "FloatInput") {
         FloatInput *f = static_cast<FloatInput*>(*it);
         if (f->inputType == "input") {
+          ImGui::SetNextItemWidth(70);
           ImGui::InputFloat(fmt::format("##{}", f->id).c_str(), &f->value);
         } else if (f->inputType == "slider") {
+          ImGui::SetNextItemWidth(70);
           ImGui::SliderFloat(fmt::format("##{}", f->id).c_str(), &f->value, f->min, f->max);
         } else if (f->inputType == "step") {
+          ImGui::SetNextItemWidth(70);
           ImGui::DragFloat(fmt::format("##{}", f->id).c_str(), &f->value, 0.1f, f->min, f->max);
         }
         if (f->value != f->value) {
