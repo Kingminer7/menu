@@ -147,8 +147,8 @@ namespace summit::ui::widgets
           ImGui::SetNextItemWidth(70);
           ImGui::DragFloat(fmt::format("##{}", f->id).c_str(), &f->value, 0.1f, f->min, f->max);
         }
-        if (f->value != f->value) {
-          f->value = f->value;
+        if (f->value != f->lastValue) {
+          f->lastValue = f->value;
           f->callback(f->value);
         }
         if (!m_description.empty())
