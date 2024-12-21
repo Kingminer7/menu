@@ -161,6 +161,48 @@ namespace summit::ui::widgets
             ImGui::EndTooltip();
           }
         }
+      } else if ((*it)->type == "IntInput") {
+        IntInput *f = static_cast<IntInput*>(*it);
+        if (f->inputType == "input") {
+          ImGui::SetNextItemWidth(70 * summit::ui::getUIScale());
+          ImGui::InputInt(fmt::format("##{}", f->id).c_str(), &f->value);
+        } else if (f->inputType == "slider") {
+          ImGui::SetNextItemWidth(70 * summit::ui::getUIScale());
+          ImGui::SliderInt(fmt::format("##{}", f->id).c_str(), &f->value, f->min, f->max);
+        } else if (f->inputType == "step") {
+          ImGui::SetNextItemWidth(70 * summit::ui::getUIScale());
+          ImGui::DragInt(fmt::format("##{}", f->id).c_str(), &f->value, 1, f->min, f->max);
+        }
+        if (f->value != f->lastValue) {
+          f->lastValue = f->value;
+          f->callback(f->value);
+        }
+        if (!m_description.empty())
+        {
+          if (ImGui::IsItemHovered())
+          {
+            ImGui::BeginTooltip();
+            ImGui::Text("%s", m_description.c_str());
+            ImGui::EndTooltip();
+          }
+        }
+      } else if ((*it)->type == "StringInput") {
+        StringInput *s = static_cast<StringInput*>(*it);
+        ImGui::SetNextItemWidth(70 * summit::ui::getUIScale());
+        ImGui::InputText(fmt::format("##{}", s->id).c_str(), &s->value[0], s->maxChars);
+        if (s->value != s->lastValue) {
+          s->lastValue = s->value;
+          s->callback(s->value);
+        }
+        if (!m_description.empty())
+        {
+          if (ImGui::IsItemHovered())
+          {
+            ImGui::BeginTooltip();
+            ImGui::Text("%s", m_description.c_str());
+            ImGui::EndTooltip();
+          }
+        }
       } else {
         geode::log::warn("Component {} in {} has an unrecognized component type: {}!", (*it)->id, m_id, (*it)->type);
       }
