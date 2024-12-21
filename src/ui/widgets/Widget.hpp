@@ -5,6 +5,7 @@ namespace summit::ui::widgets {
   struct Component {
     std::string id;
     std::string type;
+    int order = 0;
   };
   struct Toggle : Component {
     bool *toggled;
@@ -49,6 +50,7 @@ namespace summit::ui::widgets {
     int selected = 0;
     std::function<void(int selected)> callback;
     std::string type = "Dropdown";
+    std::map<std::string, std::pair<std::string, std::string>> fonts = {};
   };
   class Widget {
     protected:
@@ -73,7 +75,7 @@ namespace summit::ui::widgets {
       // @brief Adds a float input to the widget
       Widget *addFloatInput(std::string id, std::function<void(float value)> callback, std::string type, float default_, float min = FLT_MIN, float max = FLT_MAX);
       // @brief Adds a dropdown to the widget
-      Widget *addDropdown(std::string id, std::function<void(int selected)> callback, std::vector<std::string> options, int default_);
+      Widget *addDropdown(std::string id, std::function<void(int selected)> callback, std::vector<std::string> options, std::string default_, std::map<std::string, std::pair<std::string, std::string>> = {});
 
       // @brief Removes a component from the widget.
       Widget *remove(std::string id);

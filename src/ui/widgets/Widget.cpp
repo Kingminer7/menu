@@ -1,42 +1,54 @@
 #include <imgui-cocos.hpp>
 #include "Widget.hpp"
 #include "../UIManager.hpp"
+#include "../imgui/FontManager.hpp"
 
 namespace summit::ui::widgets
 {
   Widget *Widget::addToggle(std::string id, std::function<void(bool toggled)> callback, bool *toggleVal)
   {
-    m_components.push_back(new Toggle{id, "Toggle", toggleVal, callback});
+    m_components.push_back(new Toggle{id, "Toggle", 0, toggleVal, callback});
     return this;
   }
 
   Widget *Widget::addButton(std::string id, std::function<void()> callback)
   {
-    m_components.push_back(new Button{id, "Button", callback});
+    m_components.push_back(new Button{id, "Button", 0, callback});
     return this;
   }
 
   Widget *Widget::addFloatInput(std::string id, std::function<void(float value)> callback, std::string inputType, float value, float min, float max)
   {
-    m_components.push_back(new FloatInput{id, "FloatInput", value, callback, min, max, inputType});
+    m_components.push_back(new FloatInput{id, "FloatInput", 0, value, callback, min, max, inputType});
     return this;
   }
 
   Widget *Widget::addIntInput(std::string id, std::function<void(int value)> callback, std::string inputType, int value, int min, int max)
   {
-    m_components.push_back(new IntInput{id, "IntInput", value, callback, min, max, inputType});
+    m_components.push_back(new IntInput{id, "IntInput", 0, value, callback, min, max, inputType});
     return this;
   }
 
   Widget *Widget::addStringInput(std::string id, std::function<void(std::string value)> callback, int maxChars, std::string value)
   {
-    m_components.push_back(new StringInput{id, "StringInput", maxChars, value, callback});
+    m_components.push_back(new StringInput{id, "StringInput", 0, maxChars, value, callback});
     return this;
   }
 
-  Widget *Widget::addDropdown(std::string id, std::function<void(int selected)> callback, std::vector<std::string> options, int selected)
+  Widget *Widget::addDropdown(std::string id, std::function<void(int selected)> callback, std::vector<std::string> options, std::string selected, std::map<std::string, std::pair<std::string, std::string>> fonts)
   {
-    m_components.push_back(new Dropdown{id, "Dropdown", options, selected, callback});
+    int selId;
+    for (int i = 0; i < options.size(); i++)
+    {
+      if (options[i] == selected)
+      {
+        selId = i;
+        break;
+      }
+    }
+    auto dd = new Dropdown{id, "Dropdown", 0, options, selId, callback};
+    dd->fonts = fonts;
+    m_components.push_back(dd);
     return this;
   }
 
@@ -227,6 +239,12 @@ namespace summit::ui::widgets
         if (ImGui::BeginCombo(fmt::format("##{}", d->id).c_str(), d->options[d->selected].c_str())) {
           for (int i = 0; i < d->options.size(); i++) {
             bool isSelected = d->selected == i;
+            if (d->fonts[d->options[i]].first != "") {
+              if (d->fonts[d->options[i]].second != "")
+                summit::ui::imgui::pushFont(d->fonts[d->options[i]].first, d->fonts[d->options[i]].second);
+              else
+                summit::ui::imgui::pushFont(d->fonts[d->options[i]].first, "Regular");
+            }
             if (ImGui::Selectable(d->options[i].c_str(), isSelected)) {
               d->selected = i;
               d->callback(i);
@@ -234,6 +252,8 @@ namespace summit::ui::widgets
             if (isSelected) {
               ImGui::SetItemDefaultFocus();
             }
+            if (d->fonts[d->options[i]].first != "")
+              summit::ui::imgui::popFont();
           }
           ImGui::EndCombo();
         }

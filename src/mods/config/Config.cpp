@@ -16,6 +16,7 @@ void ConfigMods::init() {
     summit::Config::setValueIfUnset<std::string>("config.fontstyle", "Regular");
     currentFont = summit::Config::getValue<std::string>("config.font", "Carme");
     currentFontStyle = summit::Config::getValue<std::string>("config.fontstyle", "Regular");
+    geode::log::info("Selected font: {}", currentFont);
     geode::queueInMainThread([this]() {
         summit::ui::imgui::setFont(currentFont, currentFontStyle);
     });
@@ -40,18 +41,29 @@ void ConfigMods::init() {
         ->setTab("Config");
     summit::ui::registerWidget(widget2);
 
+    std::map<std::string, std::pair<std::string, std::string>> fonts;
+    for (auto font : summit::ui::imgui::getFonts()) {
+        fonts[font] = {font, "Regular"};
+    }
+
     auto widget3 = summit::ui::widgets::Widget::create("config.font")
         ->setLabel("Font")
         ->setDescription("Change the font of the UI.")
         ->addDropdown("config.font.dropdown", [this](int selected) {
             currentFont = summit::ui::imgui::getFonts()[selected];
+            geode::log::info("Selected font: {}", currentFont);
             summit::Config::setValue<std::string>("config.font", currentFont);
             geode::queueInMainThread([this]() {
                 summit::ui::imgui::setFont(currentFont, currentFontStyle);
             });
-        }, summit::ui::imgui::getFonts(), summit::ui::imgui::getFonts().size() - 1)
+        }, summit::ui::imgui::getFonts(), currentFont, fonts)
         ->setTab("Config");
     summit::ui::registerWidget(widget3);
+
+    std::map<std::string, std::pair<std::string, std::string>> fontStyles;
+    for (auto style : summit::ui::imgui::getFontStyles(currentFont)) {
+        fontStyles[style] = {currentFont, style};
+    }
 
     auto widget4 = summit::ui::widgets::Widget::create("config.fontstyle")
         ->setLabel("Font Style")
@@ -62,7 +74,7 @@ void ConfigMods::init() {
             geode::queueInMainThread([this]() {
                 summit::ui::imgui::setFont(currentFont, currentFontStyle);
             });
-        }, summit::ui::imgui::getFontStyles(), summit::ui::imgui::getFontStyles().size() - 1)
+        }, summit::ui::imgui::getFontStyles(), currentFontStyle, fontStyles)
         ->setTab("Config");
     summit::ui::registerWidget(widget4);
 }

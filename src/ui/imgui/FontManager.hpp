@@ -1,3 +1,4 @@
+#include <imgui.h>
 namespace summit::ui::imgui {
     std::vector<std::string> getFonts();
     std::vector<std::string> getFontStyles();
