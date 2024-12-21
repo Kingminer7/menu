@@ -4,7 +4,7 @@ namespace summit::ui::widgets {
 
   struct Component {
     std::string id;
-    std::string getType() {
+    virtual std::string getType() {
       return "Component";
     }
   };
@@ -18,7 +18,7 @@ namespace summit::ui::widgets {
   struct Button : Component {
     // std::string id;
     std::function<void()> callback;
-    std::string getType() {
+    std::string getType() override {
       return "Button";
     }
   };
@@ -26,7 +26,7 @@ namespace summit::ui::widgets {
     int maxChars = 0;
     std::string value = "";
     std::function<void(std::string value)> callback;
-    std::string getType() {
+    std::string getType() override {
       return "StringInput";
     }
   };
@@ -37,7 +37,7 @@ namespace summit::ui::widgets {
     int min = INT_MIN;
     int max = INT_MAX;
     std::function<void(int value)> callback;
-    std::string getType() {
+    std::string getType() override {
       return "IntInput";
     }
   };
@@ -48,7 +48,7 @@ namespace summit::ui::widgets {
     float min = FLT_MIN;
     float max = FLT_MAX;
     std::function<void(float value)> callback;
-    std::string getType() {
+    std::string getType() override {
       return "FloatInput";
     }
   };
