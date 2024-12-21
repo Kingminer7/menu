@@ -22,6 +22,24 @@ namespace summit::ui::widgets
     return this;
   }
 
+  Widget *Widget::addIntInput(std::string id, std::function<void(int value)> callback, std::string inputType, int value, int min, int max)
+  {
+    m_components.push_back(new IntInput{id, "IntInput", value, callback, min, max, inputType});
+    return this;
+  }
+
+  Widget *Widget::addStringInput(std::string id, std::function<void(std::string value)> callback, int maxChars, std::string value)
+  {
+    m_components.push_back(new StringInput{id, "StringInput", maxChars, value, callback});
+    return this;
+  }
+
+  Widget *Widget::addDropdown(std::string id, std::function<void(int selected)> callback, std::vector<std::string> options, int selected)
+  {
+    m_components.push_back(new Dropdown{id, "Dropdown", options, selected, callback});
+    return this;
+  }
+
   Widget *Widget::remove(std::string id)
   {
     for (auto it = m_components.begin(); it != m_components.end(); it++)
@@ -193,6 +211,31 @@ namespace summit::ui::widgets
         if (s->value != s->lastValue) {
           s->lastValue = s->value;
           s->callback(s->value);
+        }
+        if (!m_description.empty())
+        {
+          if (ImGui::IsItemHovered())
+          {
+            ImGui::BeginTooltip();
+            ImGui::Text("%s", m_description.c_str());
+            ImGui::EndTooltip();
+          }
+        }
+      } else if ((*it)->type == "Dropdown") {
+        Dropdown *d = static_cast<Dropdown*>(*it);
+        ImGui::SetNextItemWidth(70 * summit::ui::getUIScale());
+        if (ImGui::BeginCombo(fmt::format("##{}", d->id).c_str(), d->options[d->selected].c_str())) {
+          for (int i = 0; i < d->options.size(); i++) {
+            bool isSelected = d->selected == i;
+            if (ImGui::Selectable(d->options[i].c_str(), isSelected)) {
+              d->selected = i;
+              d->callback(i);
+            }
+            if (isSelected) {
+              ImGui::SetItemDefaultFocus();
+            }
+          }
+          ImGui::EndCombo();
         }
         if (!m_description.empty())
         {

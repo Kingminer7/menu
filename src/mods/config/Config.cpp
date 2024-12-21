@@ -39,7 +39,32 @@ void ConfigMods::init() {
         ->setDescription("Change the scale of the UI.")
         ->setTab("Config");
     summit::ui::registerWidget(widget2);
-    
+
+    auto widget3 = summit::ui::widgets::Widget::create("config.font")
+        ->setLabel("Font")
+        ->setDescription("Change the font of the UI.")
+        ->addDropdown("config.font.dropdown", [this](int selected) {
+            currentFont = summit::ui::imgui::getFonts()[selected];
+            summit::Config::setValue<std::string>("config.font", currentFont);
+            geode::queueInMainThread([this]() {
+                summit::ui::imgui::setFont(currentFont, currentFontStyle);
+            });
+        }, summit::ui::imgui::getFonts(), summit::ui::imgui::getFonts().size() - 1)
+        ->setTab("Config");
+    summit::ui::registerWidget(widget3);
+
+    auto widget4 = summit::ui::widgets::Widget::create("config.fontstyle")
+        ->setLabel("Font Style")
+        ->setDescription("Change the style of the font.")
+        ->addDropdown("config.fontstyle.dropdown", [this](int selected) {
+            currentFontStyle = summit::ui::imgui::getFontStyles()[selected];
+            summit::Config::setValue<std::string>("config.fontstyle", currentFontStyle);
+            geode::queueInMainThread([this]() {
+                summit::ui::imgui::setFont(currentFont, currentFontStyle);
+            });
+        }, summit::ui::imgui::getFontStyles(), summit::ui::imgui::getFontStyles().size() - 1)
+        ->setTab("Config");
+    summit::ui::registerWidget(widget4);
 }
 
 void ConfigMods::update(float dt) {

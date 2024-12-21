@@ -26,11 +26,11 @@ namespace summit::ui::widgets {
   };
   struct IntInput : Component {
     // @brief input, slider, or step
-    std::string inputType = "input";
     int value = 0;
+    std::function<void(int value)> callback;
     int min = INT_MIN;
     int max = INT_MAX;
-    std::function<void(int value)> callback;
+    std::string inputType = "input";
     std::string type = "IntInput";
     int lastValue = 0;
   };
@@ -44,7 +44,12 @@ namespace summit::ui::widgets {
     std::string type = "FloatInput";
     float lastValue = 0;
   };
-
+  struct Dropdown : Component {
+    std::vector<std::string> options;
+    int selected = 0;
+    std::function<void(int selected)> callback;
+    std::string type = "Dropdown";
+  };
   class Widget {
     protected:
       std::string m_id;
@@ -67,6 +72,8 @@ namespace summit::ui::widgets {
       Widget *addIntInput(std::string id, std::function<void(int value)> callback, std::string type, int min, int max, int default_);
       // @brief Adds a float input to the widget
       Widget *addFloatInput(std::string id, std::function<void(float value)> callback, std::string type, float default_, float min = FLT_MIN, float max = FLT_MAX);
+      // @brief Adds a dropdown to the widget
+      Widget *addDropdown(std::string id, std::function<void(int selected)> callback, std::vector<std::string> options, int default_);
 
       // @brief Removes a component from the widget.
       Widget *remove(std::string id);
