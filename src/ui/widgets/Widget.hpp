@@ -11,7 +11,7 @@ namespace summit::ui::widgets {
   struct Toggle : Component {
     bool toggled = false;
     std::function<void(bool toggled)> callback;
-    std::string getType() {
+    std::string getType() override {
       return "Toggle";
     }
   };
