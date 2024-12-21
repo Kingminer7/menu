@@ -110,7 +110,7 @@ namespace summit::ui::widgets
       }
     }
     for (auto it = m_components.begin(); it != m_components.end(); it++) {
-      if ((*it)->getType() == "Toggle") {
+      if ((*it)->type == "Toggle") {
         Toggle *t = static_cast<Toggle*>(*it);
         geode::log::info("Toggle: {}", t->id);
         ImGui::Checkbox(fmt::format("##{}", t->id).c_str(), &t->toggled);
@@ -123,7 +123,7 @@ namespace summit::ui::widgets
             ImGui::EndTooltip();
           }
         }
-      } else if ((*it)->getType() == "Button") {
+      } else if ((*it)->type == "Button") {
         Button *b = static_cast<Button*>(*it);
         geode::log::info("Button: {}", b->id);
         if (ImGui::Button(b->id.c_str())) {
