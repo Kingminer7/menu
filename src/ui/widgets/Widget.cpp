@@ -1,5 +1,6 @@
 #include <imgui-cocos.hpp>
 #include "Widget.hpp"
+#include "../UIManager.hpp"
 
 namespace summit::ui::widgets
 {
@@ -138,13 +139,13 @@ namespace summit::ui::widgets
       } else if ((*it)->type == "FloatInput") {
         FloatInput *f = static_cast<FloatInput*>(*it);
         if (f->inputType == "input") {
-          ImGui::SetNextItemWidth(70);
+          ImGui::SetNextItemWidth(70 * summit::ui::getUIScale());
           ImGui::InputFloat(fmt::format("##{}", f->id).c_str(), &f->value);
         } else if (f->inputType == "slider") {
-          ImGui::SetNextItemWidth(70);
+          ImGui::SetNextItemWidth(70 * summit::ui::getUIScale());
           ImGui::SliderFloat(fmt::format("##{}", f->id).c_str(), &f->value, f->min, f->max);
         } else if (f->inputType == "step") {
-          ImGui::SetNextItemWidth(70);
+          ImGui::SetNextItemWidth(70 * summit::ui::getUIScale());
           ImGui::DragFloat(fmt::format("##{}", f->id).c_str(), &f->value, 0.1f, f->min, f->max);
         }
         if (f->value != f->lastValue) {
