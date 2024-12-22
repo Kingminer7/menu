@@ -120,4 +120,4 @@ class $modify (PassGameObject, GameObject) {
         GameObject::customSetup();
         m_isPassable = summit::Config::getValue<bool>("player.noclip.passable", false);
     }
-}
+};
