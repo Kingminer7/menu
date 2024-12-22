@@ -118,6 +118,6 @@ class $modify (PlayLayer) {
 class $modify (PassGameObject, GameObject) {
     void customSetup() {
         GameObject::customSetup();
-        m_isPassable = summit::Config::getValue<bool>("player.noclip.passable", false);
+        m_isPassable = summit::Config::getValue<bool>("player.noclip.passable", true);
     }
 };
