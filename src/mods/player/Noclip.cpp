@@ -114,7 +114,7 @@ class $modify (PlayLayer) {
     }
 };
 
-#include <Geode/modify/GameObject>
+#include <Geode/modify/GameObject.hpp>
 class $modify (PassGameObject, GameObject) {
     void customSetup() {
         GameObject::customSetup();
