@@ -7,6 +7,7 @@ class NoclipMod : public summit::mods::Mod {
         bool noclip = false;
         bool player1 = true;
         bool player2 = true;
+        bool allPassable = false;
     public:
         void init() override;
         void update(float dt) override;
@@ -15,6 +16,7 @@ class NoclipMod : public summit::mods::Mod {
         void onNoclip(bool toggled);
         void onPlayer1(bool toggled);
         void onPlayer2(bool toggled);
+        void onPassable(bool toggled);
 };
 
 REGISTER_MOD(new NoclipMod());
