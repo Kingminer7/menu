@@ -12,6 +12,8 @@ void NoclipMod::init() {
     summit::Config::setValueIfUnset<bool>("player.noclip.player2", true);
     player2 = summit::Config::getValue<bool>("player.noclip.player2", true);
 
+    summit::Config::setValueIfUnset<bool>("player.noclip.passable", true);
+    allPassable = summit::Config::getValue<bool>("player.noclip.passable", true);
 
     auto widget = summit::ui::widgets::Widget::create("player.noclip")
         ->addToggle("player.noclip.toggle", [this](bool toggled) {
@@ -21,6 +23,15 @@ void NoclipMod::init() {
         ->setDescription("Prevents you from dying.")
         ->setTab("Player");
     summit::ui::registerWidget(widget);
+
+    auto widget4 = summit::ui::widgets::Widget::create("player.passable")
+        ->addToggle("player.noclip.passable", [this](bool toggled) {
+            onPassable(toggled);
+        }, &allPassable)
+        ->setLabel("All Passable")
+        ->setDescription("Makes all objects passable.")
+        ->setTab("Player");
+    summit::ui::registerWidget(widget4);
 }
 
 void NoclipMod::update(float dt) {
@@ -85,6 +96,10 @@ void NoclipMod::onPlayer2(bool toggled) {
     summit::Config::setValue<bool>("player.noclip.player2", toggled);
 }
 
+void NoclipMod::onPassable(bool toggled) {
+    summit::Config::setValue<bool>("player.noclip.passable", toggled);
+}
+
 #include <Geode/modify/PlayLayer.hpp>
 class $modify (PlayLayer) {
     void destroyPlayer(PlayerObject *player, GameObject *obj) {
@@ -98,3 +113,11 @@ class $modify (PlayLayer) {
         }
     }
 };
+
+#include <Geode/modify/GameObject>
+class $modify (PassGameObject, GameObject) {
+    void customSetup() {
+        GameObject::customSetup();
+        m_isPassable = summit::Config::getValue<bool>("player.noclip.passable", false);
+    }
+}
